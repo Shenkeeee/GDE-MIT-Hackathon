@@ -1,6 +1,6 @@
 const WelcomeContent = () => {
   const handleSendHello = () => {
-    fetch("http://localhost:8000/items/hello")
+    fetch(`${import.meta.env.VITE_API_URL}/items/hello`)
       .then((res) => res.json())
       .then((data) => {
         alert(`server said ${data.message}`);
