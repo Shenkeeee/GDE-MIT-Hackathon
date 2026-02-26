@@ -1,10 +1,10 @@
-# React + Fastapi template
+# GDE MIT Hackathon entry
 
-## Description
+## Team
 
-This is a template with React and Fastapi with basic communication.
+Timea Subicz, Mate Subicz, Benjamin Tako
 
-## Get started
+## Get started - dev
 
 - clone repo
 
