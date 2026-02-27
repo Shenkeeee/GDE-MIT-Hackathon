@@ -9,7 +9,6 @@ from pathlib import Path
 import datetime
 
 
-
 # FOOD
 # id
 # user_id
@@ -19,9 +18,10 @@ import datetime
 # timestamp
 
 BASE_DIR = Path(__file__).resolve().parent
-DB_USERS =  BASE_DIR / "DB" /  "users.db"
-DB_FOODS =  BASE_DIR / "DB" /  "foods.db"
+DB_USERS = BASE_DIR / "DB" / "users.db"
+DB_FOODS = BASE_DIR / "DB" / "foods.db"
 DB_SYMPTOM = BASE_DIR / "DB" / "symptom.db"
+
 
 def create_database():
     conn = sqlite3.connect(DB_FOODS)
@@ -37,7 +37,8 @@ def create_database():
             allergen TEXT NOT NULL,
             creation_date TEXT DEFAULT CURRENT_TIMESTAMP
         )
-    """)
+    """
+    )
 
     conn.commit()
     conn.close()
@@ -105,8 +106,7 @@ def generate_sample_data():
             allergen = food_data[food]["allergen"]
 
             random_seconds = random.randint(
-                0,
-                int((end_date - start_date).total_seconds())
+                0, int((end_date - start_date).total_seconds())
             )
 
             random_date = start_date + datetime.timedelta(seconds=random_seconds)
@@ -129,11 +129,10 @@ def generate_sample_data():
 
 
 class ManageFood:
-    def __init__(self, fooddb_path):
-        self.fooddb = fooddb_path
+    def __init__(self):
+        pass
 
-
-    def add_item(self, user_id, food_name,category, quantity):
+    def add_item(self, user_id, food_name, category, quantity):
         conn = sqlite3.connect(DB_FOODS)
         cursor = conn.cursor()
 
@@ -142,41 +141,32 @@ class ManageFood:
             INSERT INTO food_diary (user_id, food_name, quantity, creation_date)
             VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
             """,
-            (user_id, food_name, category, quantity)
+            (user_id, food_name, category, quantity),
         )
 
         conn.commit()
         conn.close()
 
-    def delete_item(self,item_id):
+    def delete_item(self, item_id):
         conn = sqlite3.connect(DB_FOODS)
         cursor = conn.cursor()
 
-        cursor.execute(
-            "DELETE FROM food_diary WHERE id = ?",
-            (item_id,)
-        )
+        cursor.execute("DELETE FROM food_diary WHERE id = ?", (item_id,))
 
         conn.commit()
         conn.close()
 
-
-    def list_items_userid(self,user_id):
+    def list_items_userid(self, user_id):
         conn = sqlite3.connect(DB_FOODS)
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
 
-        cursor.execute(
-            "SELECT * FROM food_diary WHERE user_id = ?",
-            (user_id,)
-        )
+        cursor.execute("SELECT * FROM food_diary WHERE user_id = ?", (user_id,))
 
         items = [dict(row) for row in cursor.fetchall()]
 
         conn.close()
         return items
-    
-
 
 
 if __name__ == "__main__":
@@ -187,3 +177,5 @@ if __name__ == "__main__":
     # ManageFood_Class.delete_item(72)
     # items = ManageFood_Class.list_items_userid(2)
     # print(items)
+
+ManageFood_Class = ManageFood()
