@@ -21,11 +21,11 @@ class UserSetter:
 
 
 import sqlite3
+from pathlib import Path
 
-
-
-DB_USERS = "backend/dbCalls/users.db"
-DB_FOODS = "backend/dbCalls/foods.db"
+BASE_DIR = Path(__file__).resolve().parent
+DB_USERS = BASE_DIR / "users.db"
+DB_FOODS = BASE_DIR / "foods.db"
 
 class UserCreator:
   def __init__(self, userdb_path):

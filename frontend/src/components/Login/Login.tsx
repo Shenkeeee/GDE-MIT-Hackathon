@@ -1,10 +1,10 @@
 import { useState } from "react";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
+  const [email, setEmail] = useState("a@b.c");
+  const [password, setPassword] = useState("Somethin");
+  const [firstname, setFirstname] = useState("Matt");
+  const [lastname, setLastname] = useState("Percy");
 
   const handleRegister = () => {
     fetch(`${import.meta.env.VITE_API_URL}/users/register/${email}`, {
