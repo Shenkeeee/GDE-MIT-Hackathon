@@ -1,3 +1,10 @@
 .DS_Store
 .vscode
 .vscode/sessions.json
+# Databases (your *db)
+*.db
+*.sqlite
+*.sqlite3
+db.sqlite3
+/data/
+storage/
