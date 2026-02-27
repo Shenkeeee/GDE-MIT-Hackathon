@@ -66,6 +66,7 @@ def generate_symptom_data():
 
         for _ in range(num_entries):
             symptom = random.choice(symptoms_list)
+            severity = random.randint(1, 5)  # ✅ Add severity (1–5)
 
             random_seconds = random.randint(
                 0,
@@ -75,9 +76,14 @@ def generate_symptom_data():
             random_date = start_date + datetime.timedelta(seconds=random_seconds)
 
             cursor.execute("""
-                INSERT INTO symptoms (user_id, symptom, creation_date)
-                VALUES (?, ?, ?)
-            """, (user_id, symptom, random_date.isoformat()))
+                INSERT INTO symptoms (user_id, severity, symptom, creation_date)
+                VALUES (?, ?, ?, ?)
+            """, (
+                user_id,
+                severity,
+                symptom,
+                random_date.isoformat()
+            ))
 
     conn.commit()
     conn.close()
@@ -133,4 +139,4 @@ class ManageSymptom:
 if __name__ == "__main__":
     pass
     # create_database()
-    # generate_symptom_data()
+    # generate_symptom_data()    
