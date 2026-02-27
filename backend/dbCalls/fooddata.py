@@ -8,9 +8,20 @@ import random
 from pathlib import Path
 import datetime
 
+
+
+# FOOD
+# id
+# user_id
+# food_name
+# category (carb, dairy, protein, etc.) (AI generated maybe)
+# quantity
+# timestamp
+
 BASE_DIR = Path(__file__).resolve().parent
-DB_USERS = BASE_DIR / "users.db"
-DB_FOODS = BASE_DIR / "foods.db"
+DB_USERS =  BASE_DIR / "DB" /  "users.db"
+DB_FOODS =  BASE_DIR / "DB" /  "foods.db"
+DB_SYMPTOM = BASE_DIR / "DB" / "symptom.db"
 
 def create_database():
     conn = sqlite3.connect(DB_FOODS)
@@ -23,6 +34,7 @@ def create_database():
             user_id INTEGER NOT NULL,
             food_name TEXT NOT NULL,
             quantity INTEGER NOT NULL,
+            category TEXT NOT NULL,
             creation_date TEXT DEFAULT CURRENT_TIMESTAMP
         )
     """)
@@ -61,6 +73,7 @@ def generate_sample_data():
 
     for user_id in range(1, 11):  # Users 1–10
         num_entries = random.randint(1, 10)
+        category = "[]"
 
         for _ in range(num_entries):
             food = random.choice(foods)
@@ -75,9 +88,9 @@ def generate_sample_data():
             random_date = start_date + datetime.timedelta(seconds=random_seconds)
 
             cursor.execute("""
-                INSERT INTO food_diary (user_id, food_name, quantity, creation_date)
-                VALUES (?, ?, ?, ?)
-            """, (user_id, food, quantity, random_date.isoformat()))
+                INSERT INTO food_diary (user_id, food_name, quantity, category,creation_date)
+                VALUES (?, ?, ?, ?, ?)
+            """, (user_id, food, quantity,category, random_date.isoformat()))
 
     conn.commit()
     conn.close()
@@ -88,16 +101,16 @@ class ManageFood:
         self.fooddb = fooddb_path
 
 
-    def add_item(self, user_id, food_name, quantity):
+    def add_item(self, user_id, food_name,category, quantity):
         conn = sqlite3.connect(DB_FOODS)
         cursor = conn.cursor()
 
         cursor.execute(
             """
             INSERT INTO food_diary (user_id, food_name, quantity, creation_date)
-            VALUES (?, ?, ?, CURRENT_TIMESTAMP)
+            VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
             """,
-            (user_id, food_name, quantity)
+            (user_id, food_name, category, quantity)
         )
 
         conn.commit()
@@ -135,10 +148,10 @@ class ManageFood:
 
 
 if __name__ == "__main__":
-    # create_database()
-    # generate_sample_data()
-    ManageFood_Class = ManageFood(DB_FOODS)
-    # ManageFood_Class.add_item(2,"Shrimp", 5)
-    # ManageFood_Class.delete_item(72)
-    items = ManageFood_Class.list_items_userid(1)
-    print(items)
+    create_database()
+    generate_sample_data()
+    # ManageFood_Class = ManageFood(DB_FOODS)
+    # # ManageFood_Class.add_item(2,"Shrimp", 5)
+    # # ManageFood_Class.delete_item(72)
+    # items = ManageFood_Class.list_items_userid(1)
+    # print(items)

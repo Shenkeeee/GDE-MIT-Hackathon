@@ -7,6 +7,13 @@ import hashlib
 import sqlite3
 from pathlib import Path
 
+
+
+BASE_DIR = Path(__file__).resolve().parent
+DB_USERS =  BASE_DIR / "DB" /  "users.db"
+DB_FOODS =  BASE_DIR / "DB" /  "foods.db"
+DB_SYMPTOM = BASE_DIR / "DB" / "symptom.db"
+
 class UserSetter:
   def __init__(self) -> None:
     self.items = 0
@@ -20,11 +27,6 @@ class UserSetter:
     return items
   
 
-
-
-BASE_DIR = Path(__file__).resolve().parent
-DB_USERS = BASE_DIR / "users.db"
-DB_FOODS = BASE_DIR / "foods.db"
 
 class UserCreator:
   def __init__(self, userdb_path):
@@ -137,12 +139,12 @@ class UserCreator:
 if __name__ == "__main__":
     # Step 1: Create DB + table
     UserCreator_Class = UserCreator(DB_USERS)
-    UserCreator_Class.create_database(DB_USERS)
-    UserCreator_Class.create_database(DB_FOODS)
+    # UserCreator_Class.create_database(DB_USERS)
+    # UserCreator_Class.create_database(DB_FOODS)
 
     # Step 2: Add sample items
     # UserCreator_Class.add_item(DB_USERS,"test", "First", "Last", "myPassword")
-    UserCreator_Class.add_item_user("testiiii", "First", "Last", "myPassword")
+    # UserCreator_Class.add_item_user("testiiii", "First", "Last", "myPassword")
 
     # Step 3: Fetch and print all items
     print("All items:")
