@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Correlation from "./Correlation/Correlation";
 import TableFood from "./FoodTable/FoodTable";
@@ -22,6 +22,27 @@ const DashboardPage = () => {
   } as const;
 
   const [activeTab, setActiveTab] = useState<Tab>("correlation");
+  const [userName, setUserName] = useState("Joe");
+
+  const handleDashboardRequest = () => {
+    fetch(`${import.meta.env.VITE_API_URL}/dashboard/${1}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userId: 1 }),
+    })
+      .then((res) => res.json())
+      .then((data: { status: "success"; name: string }) => {
+        // console.log("result is ", data);
+        setUserName(data.name);
+      })
+      .catch((err) => console.error(err));
+  };
+
+  useEffect(() => {
+    handleDashboardRequest();
+  }, []);
 
   return (
     <div className="min-h-screen w-screen bg-[#0f3d2e] relative">
@@ -45,7 +66,9 @@ const DashboardPage = () => {
           </button>
         </div>
 
-        <h2 className="text-3xl font-semibold text-lime-300">Hi, Mate</h2>
+        <h2 className="text-3xl font-semibold text-lime-300">
+          Hi, {userName}!
+        </h2>
       </div>
 
       {/* MAIN PANEL */}

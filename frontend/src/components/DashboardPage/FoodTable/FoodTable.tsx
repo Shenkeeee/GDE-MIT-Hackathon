@@ -64,12 +64,12 @@ const TableFood = () => {
   const [data, setData] = useState<Food[]>(initialData);
 
   const handleDelete = (id: number) => {
-    // later → call backend
+    // later -> call backend
     setData((prev) => prev.filter((item) => item.id !== id));
   };
 
   const handleEdit = (food: Food) => {
-    // later → open modal / route
+    // later -> open modal / route
     console.log("Edit clicked:", food);
   };
 
