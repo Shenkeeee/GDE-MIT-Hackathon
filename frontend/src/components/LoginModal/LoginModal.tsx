@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 const LoginModal = ({ open, onClose }) => {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("a@b.c");
   const [password, setPassword] = useState("Somethin");
 
@@ -21,8 +24,8 @@ const LoginModal = ({ open, onClose }) => {
   };
 
   const handleGuestLogin = () => {
-    alert("Guest login placeholder");
-    // navigate("/dashboard"); // if using React Router
+    alert("navigating to dashboard for now...");
+    navigate("/dashboard"); // if using React Router
   };
 
   return (
