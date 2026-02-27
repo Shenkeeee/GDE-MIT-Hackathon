@@ -37,25 +37,27 @@ const Home = () => {
       </video>
 
       {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+      <div className="absolute inset-0 bg-black/20 backdrop-blur-sm" />
 
       {/* Center Content */}
-      <div className="relative z-10 flex flex-col items-center justify-center h-full text-white text-center px-6">
-        <h2 className="text-xl md:text-2xl tracking-wide opacity-80">
-          Bread Crumbs
+      <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6 text-[#e1fe6b]">
+        <h2 className="text-2xl md:text-2xl tracking-wide opacity-80 capitalize">
+          Bread Cramps
         </h2>
 
-        <h1 className="text-4xl md:text-6xl font-bold mt-4">
-          Uncover Complete Wellness & Health
+        <h1 className="text-4xl md:text-6xl font-bold mt-4 text-[#e1fe6b]">
+          Uncover Complete
+          <br />
+          Wellness and healing
         </h1>
 
-        <p className="mt-4 text-sm md:text-base opacity-70 max-w-xl">
+        <p className="mt-4 text-sm md:text-base opacity-70 max-w-xl text-[#e1fe6b]">
           Follow the bread crumbs to breed the crumbs.
         </p>
 
         <button
           onClick={() => setOpenAuth(true)}
-          className="mt-10 px-8 py-3 bg-white/10 border border-white/30 backdrop-blur-md rounded-xl text-white hover:bg-white/20 transition"
+          className="mt-10 px-8 py-3 bg-white/10 border border-white/30 backdrop-blur-md rounded-xl hover:bg-white/20 transition text-[#e1fe6b]"
         >
           Let's Start
         </button>
