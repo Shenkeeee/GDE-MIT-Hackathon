@@ -37,3 +37,13 @@ def post_item(user: UserData):
     print(f"Email: {user.email}, Password: {user.password}, FirstName: {user.firstname}, LastName: {user.lastname}")
     UserCrator_Class.add_item_user(user.email, user.firstname, user.lastname, user.password)
     return {"added entry": f"{user.email}: {user.password}"}
+
+class UserDataLogin(BaseModel):
+    email: EmailStr
+    password: str
+
+@router.post("/login/{user_id}")
+def handle_login(user: UserDataLogin):
+    print(f"Email: {user.email}, Password: {user.password}")
+    # UserCrator_Class.add_item_user(user.email, user.firstname, user.lastname, user.password)
+    return {"login entry": f"{user.email}: {user.password}"}

@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+const Register = () => {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("a@b.c");
   const [password, setPassword] = useState("Somethin");
+  const [firstname, setFirstname] = useState("Matt");
+  const [lastname, setLastname] = useState("Percy");
 
-  const handleLogin = () => {
-    fetch(`${import.meta.env.VITE_API_URL}/users/login/${email}`, {
+  const handleRegister = () => {
+    fetch(`${import.meta.env.VITE_API_URL}/users/register/${email}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -16,6 +18,8 @@ const Login = () => {
       body: JSON.stringify({
         email: email,
         password: password,
+        firstname: firstname,
+        lastname: lastname,
       }),
     })
       .then((res) => res.json())
@@ -25,14 +29,17 @@ const Login = () => {
       .catch((err) => console.error(err));
   };
 
-  const handleGuestLogin = () => {
+  const handleGuestRegister = () => {
     // fetch(`${import.meta.env.VITE_API_URL}/users/`)
     //   .then((res) => res.json())
     //   .then((data) => {
     //     alert(`server said ${JSON.stringify(data, null, 2)}`);
     //   })
     //   .catch((err) => console.error(err));
-    navigate("/dashboard");
+  };
+
+  const handleGoToLogin = () => {
+    navigate("/login");
   };
 
   return (
@@ -46,6 +53,22 @@ const Login = () => {
       />
 
       <input
+        type="firstname"
+        value={firstname}
+        onChange={(e) => setFirstname(e.currentTarget.value)}
+        placeholder="First Name"
+        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-50"
+      />
+
+      <input
+        type="lastname"
+        value={lastname}
+        onChange={(e) => setLastname(e.currentTarget.value)}
+        placeholder="Last Name"
+        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-50"
+      />
+
+      <input
         type="password"
         value={password}
         onChange={(e) => setPassword(e.currentTarget.value)}
@@ -54,20 +77,26 @@ const Login = () => {
       />
 
       <button
-        onClick={() => handleLogin()}
+        onClick={() => handleRegister()}
         className="px-4 py-2 rounded-md text-white bg-blue-500 hover:bg-blue-600 transition hover:cursor-pointer"
       >
-        Login
+        Register
       </button>
       <button
-        onClick={handleGuestLogin}
+        onClick={handleGuestRegister}
         className="px-4 py-2 rounded-md text-white bg-blue-400 hover:bg-blue-600 transition hover:cursor-pointer"
       >
-        {/* Continue as guest (go to dashboard for now) */}
-        Go to dashbord
+        Continue as guest
+      </button>
+
+      <button
+        onClick={() => handleGoToLogin()}
+        className="px-4 py-2 rounded-md text-white bg-blue-500 hover:bg-blue-600 transition hover:cursor-pointer"
+      >
+        Go to login
       </button>
     </div>
   );
 };
 
-export default Login;
+export default Register;
