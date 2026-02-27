@@ -1,4 +1,8 @@
-const WelcomeContent = ({ setIsLoginActive }) => {
+import { useNavigate } from "react-router-dom";
+
+const Home = () => {
+  const navigate = useNavigate();
+
   const handleSendHello = () => {
     fetch(`${import.meta.env.VITE_API_URL}/items/hello`)
       .then((res) => res.json())
@@ -33,7 +37,7 @@ const WelcomeContent = ({ setIsLoginActive }) => {
       <div className="flex gap-2 items-center justify-center flex-col">
         <button
           className="px-4 py-2 rounded-md text-white bg-blue-500 hover:bg-blue-600 transition hover:cursor-pointer"
-          onClick={() => setIsLoginActive(true)}
+          onClick={() => navigate("/login")}
         >
           Lets go!
         </button>
@@ -42,4 +46,4 @@ const WelcomeContent = ({ setIsLoginActive }) => {
   );
 };
 
-export default WelcomeContent;
+export default Home;
