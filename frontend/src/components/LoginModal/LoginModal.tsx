@@ -17,9 +17,20 @@ const LoginModal = ({ open, onClose }) => {
       body: JSON.stringify({ email, password }),
     })
       .then((res) => res.json())
-      .then((data) => {
-        alert(`Server said: ${JSON.stringify(data, null, 2)}`);
-      })
+      .then(
+        (data: {
+          status: "success" | "error";
+          message?: string;
+          userId?: string;
+        }) => {
+          if (data.status === "error") {
+            alert(`Login unsuccesful: ${data?.message}`);
+            return;
+          }
+          // success
+          navigate("/dashboard");
+        },
+      )
       .catch((err) => console.error(err));
   };
 
