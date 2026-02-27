@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import Correlation from "./Correlation/Correlation";
 import TableFood from "./FoodTable/FoodTable";
+import TopBar from "./TopBar/TopBar";
 
 import { FaFilter } from "react-icons/fa";
 
@@ -25,13 +26,16 @@ const DashboardPage = () => {
   const [userName, setUserName] = useState("Joe");
 
   const handleDashboardRequest = () => {
-    fetch(`${import.meta.env.VITE_API_URL}/dashboard/${1}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    fetch(
+      `${import.meta.env.VITE_API_URL}/dashboard/${sessionStorage.getItem("userId")}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: sessionStorage.getItem("userId") }),
       },
-      body: JSON.stringify({ userId: 1 }),
-    })
+    )
       .then((res) => res.json())
       .then((data: { status: "success"; name: string }) => {
         // console.log("result is ", data);
@@ -55,21 +59,7 @@ const DashboardPage = () => {
         }}
       />
 
-      {/* TOP BAR */}
-      <div className="relative z-10 flex justify-between items-center px-16 pt-10 text-white">
-        <div className="flex gap-4">
-          <button className="px-5 py-2 rounded-full bg-green-600 hover:bg-green-700 transition">
-            Add Food
-          </button>
-          <button className="px-5 py-2 rounded-full bg-red-500 hover:bg-red-600 transition">
-            Add Symptom
-          </button>
-        </div>
-
-        <h2 className="text-3xl font-semibold text-lime-300">
-          Hi, {userName}!
-        </h2>
-      </div>
+      <TopBar userName={userName} />
 
       {/* MAIN PANEL */}
       <div className="relative z-10 mt-12 mx-16 bg-[#f1f3e8] rounded-t-3xl p-12 shadow-xl min-h-[78vh] flex flex-col">

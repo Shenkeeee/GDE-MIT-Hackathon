@@ -27,6 +27,8 @@ const LoginModal = ({ open, onClose }) => {
             alert(`Login unsuccesful: ${data?.message}`);
             return;
           }
+
+          sessionStorage.setItem("userId", data.userId);
           // success
           navigate("/dashboard");
         },
