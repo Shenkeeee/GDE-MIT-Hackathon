@@ -3,6 +3,8 @@ import { useState } from "react";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
 
   const handleRegister = () => {
     fetch(`${import.meta.env.VITE_API_URL}/users/register/${email}`, {
@@ -13,6 +15,8 @@ const Login = () => {
       body: JSON.stringify({
         email: email,
         password: password,
+        firstname: firstname,
+        lastname: lastname,
       }),
     })
       .then((res) => res.json())
@@ -47,6 +51,22 @@ const Login = () => {
         value={email}
         onChange={(e) => setEmail(e.currentTarget.value)}
         placeholder="Email"
+        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-50"
+      />
+
+      <input
+        type="firstname"
+        value={firstname}
+        onChange={(e) => setFirstname(e.currentTarget.value)}
+        placeholder="First Name"
+        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-50"
+      />
+
+      <input
+        type="lastname"
+        value={lastname}
+        onChange={(e) => setLastname(e.currentTarget.value)}
+        placeholder="Last Name"
         className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-50"
       />
 
