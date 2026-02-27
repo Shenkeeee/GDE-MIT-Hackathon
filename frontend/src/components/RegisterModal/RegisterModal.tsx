@@ -21,9 +21,20 @@ const RegisterModal = ({ open, onClose }) => {
       }),
     })
       .then((res) => res.json())
-      .then((data) => {
-        alert(`Server said: ${JSON.stringify(data, null, 2)}`);
-      })
+      .then(
+        (data: {
+          status: "success" | "error";
+          message?: string;
+          userId?: string;
+        }) => {
+          if (data.status === "error") {
+            alert(`Error when creating: ${data.message}`);
+            return;
+          }
+          // success
+          alert(`Succesful registration`);
+        },
+      )
       .catch((err) => console.error(err));
   };
 
