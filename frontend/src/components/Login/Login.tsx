@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("a@b.c");
   const [password, setPassword] = useState("Somethin");
   const [firstname, setFirstname] = useState("Matt");
@@ -36,12 +39,13 @@ const Login = () => {
   };
 
   const handleGuestLogin = () => {
-    fetch(`${import.meta.env.VITE_API_URL}/users/`)
-      .then((res) => res.json())
-      .then((data) => {
-        alert(`server said ${JSON.stringify(data, null, 2)}`);
-      })
-      .catch((err) => console.error(err));
+    // fetch(`${import.meta.env.VITE_API_URL}/users/`)
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     alert(`server said ${JSON.stringify(data, null, 2)}`);
+    //   })
+    //   .catch((err) => console.error(err));
+    navigate("/dashboard");
   };
 
   return (
@@ -94,7 +98,8 @@ const Login = () => {
         onClick={handleGuestLogin}
         className="px-4 py-2 rounded-md text-white bg-blue-400 hover:bg-blue-600 transition hover:cursor-pointer"
       >
-        Continue as guest
+        {/* Continue as guest (go to dashboard for now) */}
+        Go to dashbord
       </button>
     </div>
   );
