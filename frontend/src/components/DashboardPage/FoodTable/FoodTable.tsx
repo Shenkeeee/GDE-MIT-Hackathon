@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
 import { FaEdit, FaTrash } from "react-icons/fa";
 
 type Food = {
@@ -7,43 +8,8 @@ type Food = {
   food_name: string;
   category: string;
   quantity: string;
-  timestamp: string;
+  creation_date: string;
 };
-
-const initialData: Food[] = [
-  {
-    id: 1,
-    user_id: 101,
-    food_name: "Oatmeal",
-    category: "Carb",
-    quantity: "250g",
-    timestamp: "2026-02-27 08:12",
-  },
-  {
-    id: 2,
-    user_id: 101,
-    food_name: "Greek Yogurt",
-    category: "Dairy",
-    quantity: "150g",
-    timestamp: "2026-02-27 12:45",
-  },
-  {
-    id: 3,
-    user_id: 101,
-    food_name: "Grilled Chicken",
-    category: "Protein",
-    quantity: "300g",
-    timestamp: "2026-02-27 18:30",
-  },
-  {
-    id: 4,
-    user_id: 101,
-    food_name: "Broccoli",
-    category: "Vegetable",
-    quantity: "200g",
-    timestamp: "2026-02-27 19:00",
-  },
-];
 
 const categoryColor = (category: string) => {
   switch (category.toLowerCase()) {
@@ -61,7 +27,29 @@ const categoryColor = (category: string) => {
 };
 
 const TableFood = () => {
-  const [data, setData] = useState<Food[]>(initialData);
+  const [data, setData] = useState<Food[]>([]);
+
+  const handleFoodTableRequest = () => {
+    fetch(
+      `${import.meta.env.VITE_API_URL}/dashboard/fooddata/${sessionStorage.getItem("userId")}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: sessionStorage.getItem("userId") }),
+      },
+    )
+      .then((res) => res.json())
+      .then((data: Food[]) => {
+        setData(data);
+      })
+      .catch((err) => console.error(err));
+  };
+
+  useEffect(() => {
+    handleFoodTableRequest();
+  }, []);
 
   const handleDelete = (id: number) => {
     // later -> call backend
@@ -71,6 +59,19 @@ const TableFood = () => {
   const handleEdit = (food: Food) => {
     // later -> open modal / route
     console.log("Edit clicked:", food);
+  };
+
+  const formatDate = (date: Date) => {
+    const formatted = date.toLocaleString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
+
+    return formatted;
   };
 
   return (
@@ -90,6 +91,12 @@ const TableFood = () => {
           </thead>
 
           <tbody>
+            {data.length === 0 && (
+              <tr className="text-center text-gray-400 py-10">
+                <td>No food entries yet.</td>
+              </tr>
+            )}
+
             {data.map((item) => (
               <tr
                 key={item.id}
@@ -112,7 +119,7 @@ const TableFood = () => {
                 <td className="px-4 py-4 text-gray-600">{item.quantity}</td>
 
                 <td className="px-4 py-4 text-gray-500 text-sm">
-                  {item.timestamp}
+                  {formatDate(new Date(item.creation_date))}
                 </td>
 
                 <td className="px-4 py-4 text-right rounded-r-2xl">
@@ -136,12 +143,6 @@ const TableFood = () => {
             ))}
           </tbody>
         </table>
-
-        {data.length === 0 && (
-          <div className="text-center text-gray-400 py-10">
-            No food entries yet.
-          </div>
-        )}
       </div>
     </div>
   );

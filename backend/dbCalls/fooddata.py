@@ -9,7 +9,6 @@ from pathlib import Path
 import datetime
 
 
-
 # FOOD
 # id
 # user_id
@@ -19,16 +18,18 @@ import datetime
 # timestamp
 
 BASE_DIR = Path(__file__).resolve().parent
-DB_USERS =  BASE_DIR / "DB" /  "users.db"
-DB_FOODS =  BASE_DIR / "DB" /  "foods.db"
+DB_USERS = BASE_DIR / "DB" / "users.db"
+DB_FOODS = BASE_DIR / "DB" / "foods.db"
 DB_SYMPTOM = BASE_DIR / "DB" / "symptom.db"
+
 
 def create_database():
     conn = sqlite3.connect(DB_FOODS)
     cursor = conn.cursor()
 
     # Create table
-    cursor.execute("""
+    cursor.execute(
+        """
         CREATE TABLE IF NOT EXISTS food_diary (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER NOT NULL,
@@ -37,12 +38,11 @@ def create_database():
             category TEXT NOT NULL,
             creation_date TEXT DEFAULT CURRENT_TIMESTAMP
         )
-    """)
+    """
+    )
 
     conn.commit()
     conn.close()
-
-
 
 
 def generate_sample_data():
@@ -61,7 +61,7 @@ def generate_sample_data():
         "Turkey Sandwich",
         "Apple",
         "Protein Shake",
-        "Vegetable Curry"
+        "Vegetable Curry",
     ]
 
     conn = sqlite3.connect(DB_FOODS)
@@ -81,27 +81,28 @@ def generate_sample_data():
 
             # Random date in February 2026
             random_seconds = random.randint(
-                0,
-                int((end_date - start_date).total_seconds())
+                0, int((end_date - start_date).total_seconds())
             )
 
             random_date = start_date + datetime.timedelta(seconds=random_seconds)
 
-            cursor.execute("""
+            cursor.execute(
+                """
                 INSERT INTO food_diary (user_id, food_name, quantity, category,creation_date)
                 VALUES (?, ?, ?, ?, ?)
-            """, (user_id, food, quantity,category, random_date.isoformat()))
+            """,
+                (user_id, food, quantity, category, random_date.isoformat()),
+            )
 
     conn.commit()
     conn.close()
 
 
 class ManageFood:
-    def __init__(self, fooddb_path):
-        self.fooddb = fooddb_path
+    def __init__(self):
+        pass
 
-
-    def add_item(self, user_id, food_name,category, quantity):
+    def add_item(self, user_id, food_name, category, quantity):
         conn = sqlite3.connect(DB_FOODS)
         cursor = conn.cursor()
 
@@ -110,48 +111,41 @@ class ManageFood:
             INSERT INTO food_diary (user_id, food_name, quantity, creation_date)
             VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
             """,
-            (user_id, food_name, category, quantity)
+            (user_id, food_name, category, quantity),
         )
 
         conn.commit()
         conn.close()
 
-    def delete_item(self,item_id):
+    def delete_item(self, item_id):
         conn = sqlite3.connect(DB_FOODS)
         cursor = conn.cursor()
 
-        cursor.execute(
-            "DELETE FROM food_diary WHERE id = ?",
-            (item_id,)
-        )
+        cursor.execute("DELETE FROM food_diary WHERE id = ?", (item_id,))
 
         conn.commit()
         conn.close()
 
-
-    def list_items_userid(self,user_id):
+    def list_items_userid(self, user_id):
         conn = sqlite3.connect(DB_FOODS)
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
 
-        cursor.execute(
-            "SELECT * FROM food_diary WHERE user_id = ?",
-            (user_id,)
-        )
+        cursor.execute("SELECT * FROM food_diary WHERE user_id = ?", (user_id,))
 
         items = [dict(row) for row in cursor.fetchall()]
 
         conn.close()
         return items
-    
-
 
 
 if __name__ == "__main__":
     # create_database()
     # generate_sample_data()
-    ManageFood_Class = ManageFood(DB_FOODS)
+    ManageFood_Class = ManageFood()
     # # ManageFood_Class.add_item(2,"Shrimp", 5)
     # # ManageFood_Class.delete_item(72)
     # items = ManageFood_Class.list_items_userid(2)
     # print(items)
+
+ManageFood_Class = ManageFood()
