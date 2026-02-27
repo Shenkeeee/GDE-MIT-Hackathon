@@ -18,7 +18,7 @@ Timea Subicz, Mate Subicz, Benjamin Tako
   - On first install:
     - create virtual env for packages: `python -m venv .venv`.
     - download required packages with `pip install fastapi uvicorn` (and everything else that comes up at runtime)
-  - Then activate venv: for bash terminal: `source ./.venv/Scripts/activate`, for powershell terminal: `.venv\Scripts\Activate.ps1`
+  - Then activate venv: for bash terminal: `source ./.venv/Scripts/activate` (or on older versions "source ./.venv/bin/activate"), for powershell terminal: `.venv\Scripts\Activate.ps1`
   - check if you have done it correctly: bash style: `which python`, powershell style: `Get-Command python` => You should see that python is ran from .venv folder
   - run `uvicorn main:app --reload`
 
