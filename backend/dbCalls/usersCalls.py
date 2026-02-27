@@ -3,8 +3,9 @@
 # Created: 2026-02-26T23:12:34.068Z
 # Description: User setter
 
-
-
+import hashlib
+import sqlite3
+from pathlib import Path
 
 class UserSetter:
   def __init__(self) -> None:
@@ -20,8 +21,6 @@ class UserSetter:
   
 
 
-import sqlite3
-from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent
 DB_USERS = BASE_DIR / "users.db"
@@ -39,7 +38,7 @@ class UserCreator:
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS items (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            email TEXT NOT NULL,
+            email TEXT UNIQUE NOT NULL,
             first TEXT NOT NULL,
             last TEXT NOT NULL,
             pwd TEXT NOT NULL
@@ -63,18 +62,54 @@ class UserCreator:
     conn.commit()
     conn.close()
 
-  def add_item_user(self,email, first, last,pwd):
-    conn = sqlite3.connect(DB_USERS)
-    cursor = conn.cursor()
+  def hash_password(self,password):
+    return hashlib.sha256(password.encode()).hexdigest()
 
-    cursor.execute(
-        "INSERT INTO items (email, first, last, pwd) VALUES (?, ?, ?, ?)",
-        (email, first, last, pwd)
-    )
+  def add_item_user(self, email, first, last, pwd):
+      conn = sqlite3.connect(DB_USERS)
+      cursor = conn.cursor()
 
-    conn.commit()
-    conn.close()
+      hashed_pwd = self.hash_password(pwd)
 
+      try:
+          cursor.execute(
+              "INSERT INTO items (email, first, last, pwd) VALUES (?, ?, ?, ?)",
+              (email, first, last, hashed_pwd)
+          )
+          conn.commit()
+          conn.close()
+          return "User created successfully"
+
+      except sqlite3.IntegrityError:
+          conn.close()
+          return "Email already exists"
+
+  def get_logindata(self, email, pwd):
+      conn = sqlite3.connect(DB_USERS)
+      cursor = conn.cursor()
+
+      # Step 1: Check if email exists
+      cursor.execute(
+          "SELECT pwd FROM items WHERE email = ?",
+          (email,)
+      )
+
+      result = cursor.fetchone()
+
+      if not result:
+          conn.close()
+          return "Email doesnt exists"
+
+      stored_pwd = result[0]
+      hashed_pwd = self.hash_password(pwd)
+
+      # Step 2: Check password
+      if hashed_pwd != stored_pwd:
+          conn.close()
+          return "Pwd not good"
+
+      conn.close()
+      return "Everything is good"
 
   def get_all_items(self,DB):
     conn = sqlite3.connect(DB)
@@ -85,6 +120,7 @@ class UserCreator:
 
     conn.close()
     return rows
+  
 
 
   def get_item_by_id(self,DB,item_id):
@@ -105,7 +141,7 @@ if __name__ == "__main__":
     UserCreator_Class.create_database(DB_FOODS)
 
     # Step 2: Add sample items
-    UserCreator_Class.add_item(DB_USERS,"test", "First", "Last", "myPassword")
+    # UserCreator_Class.add_item(DB_USERS,"test", "First", "Last", "myPassword")
     UserCreator_Class.add_item_user("testiiii", "First", "Last", "myPassword")
 
     # Step 3: Fetch and print all items
