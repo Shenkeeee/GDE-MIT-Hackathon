@@ -135,7 +135,7 @@ class ManageFood:
         cursor = conn.cursor()
 
         cursor.execute(
-            "SELECT creation_date, food_name, quantity FROM food_diary WHERE user_id = ?",
+            "SELECT * FROM food_diary WHERE user_id = ?",
             (user_id,)
         )
 
@@ -148,10 +148,10 @@ class ManageFood:
 
 
 if __name__ == "__main__":
-    create_database()
-    generate_sample_data()
-    # ManageFood_Class = ManageFood(DB_FOODS)
+    # create_database()
+    # generate_sample_data()
+    ManageFood_Class = ManageFood(DB_FOODS)
     # # ManageFood_Class.add_item(2,"Shrimp", 5)
     # # ManageFood_Class.delete_item(72)
-    # items = ManageFood_Class.list_items_userid(1)
+    # items = ManageFood_Class.list_items_userid(2)
     # print(items)
