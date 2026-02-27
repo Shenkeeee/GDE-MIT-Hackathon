@@ -79,12 +79,22 @@ class UserCreator:
               (email, first, last, hashed_pwd)
           )
           conn.commit()
+
+          user_id = cursor.lastrowid  # Get the generated ID
           conn.close()
-          return "User created successfully"
+
+          return {
+              "status": "success",
+              "message": "User created successfully",
+              "user_id": user_id
+          }
 
       except sqlite3.IntegrityError:
           conn.close()
-          return "Email already exists"
+          return {
+              "status": "error",
+              "message": "Email already exists"
+          }
 
   def get_logindata(self, email, pwd):
       conn = sqlite3.connect(DB_USERS)
