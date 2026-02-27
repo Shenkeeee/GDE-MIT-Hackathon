@@ -134,14 +134,29 @@ class UserCreator:
         row = cursor.fetchone()
 
         conn.close()
-        return row
+        return 
+    
+    def get_name_by_id(self, DB, item_id):
+      conn = sqlite3.connect(DB)
+      cursor = conn.cursor()
+
+      cursor.execute("SELECT first FROM items WHERE id = ?", (item_id,))
+      row = cursor.fetchone()
+
+      conn.close()
+
+      if row:
+          return row[0]  # return only the first name
+      return None
+      
+
 
 
 if __name__ == "__main__":
     pass
     # RUN THIS ON INIT
     # # Step 1: Create DB + table
-    # UserCreator_Class = UserCreator(DB_USERS)
+    UserCreator_Class = UserCreator(DB_USERS)
     # UserCreator_Class.create_database(DB_USERS)
     # # UserCreator_Class.create_database(DB_FOODS)
 
@@ -155,4 +170,5 @@ if __name__ == "__main__":
 
     # # Step 4: Fetch single item
     # print("\nItem with ID 1:")
-    # print(UserCreator_Class.get_item_by_id(DB_USERS, (1)))
+    print(UserCreator_Class.get_name_by_id(DB_USERS, 1))
+    
