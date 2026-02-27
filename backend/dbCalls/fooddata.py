@@ -27,14 +27,14 @@ def create_database():
     conn = sqlite3.connect(DB_FOODS)
     cursor = conn.cursor()
 
-    # Create table
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS food_diary (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER NOT NULL,
             food_name TEXT NOT NULL,
             quantity INTEGER NOT NULL,
-            category TEXT NOT NULL,
+            ingredients TEXT NOT NULL,
+            allergen TEXT NOT NULL,
             creation_date TEXT DEFAULT CURRENT_TIMESTAMP
         )
     """)
@@ -44,42 +44,66 @@ def create_database():
 
 
 
-
 def generate_sample_data():
-    foods = [
-        "Banana",
-        "Cabbage Soup",
-        "Chicken Wrap",
-        "Grilled Salmon",
-        "Oatmeal",
-        "Scrambled Eggs",
-        "Avocado Toast",
-        "Greek Yogurt",
-        "Beef Stir Fry",
-        "Pasta Bolognese",
-        "Caesar Salad",
-        "Turkey Sandwich",
-        "Apple",
-        "Protein Shake",
-        "Vegetable Curry"
-    ]
+    food_data = {
+        "Banana": {
+            "ingredients": "Banana",
+            "allergen": "None"
+        },
+        "Cabbage Soup": {
+            "ingredients": "Cabbage, Carrot, Onion, Vegetable Broth",
+            "allergen": "None"
+        },
+        "Chicken Wrap": {
+            "ingredients": "Chicken, Tortilla, Lettuce, Tomato, Sauce",
+            "allergen": "Gluten"
+        },
+        "Grilled Salmon": {
+            "ingredients": "Salmon, Olive Oil, Lemon",
+            "allergen": "Fish"
+        },
+        "Oatmeal": {
+            "ingredients": "Oats, Milk, Honey",
+            "allergen": "Dairy"
+        },
+        "Scrambled Eggs": {
+            "ingredients": "Eggs, Butter, Salt",
+            "allergen": "Egg"
+        },
+        "Greek Yogurt": {
+            "ingredients": "Milk, Live Cultures",
+            "allergen": "Dairy"
+        },
+        "Beef Stir Fry": {
+            "ingredients": "Beef, Soy Sauce, Vegetables",
+            "allergen": "Soy"
+        },
+        "Pasta Bolognese": {
+            "ingredients": "Pasta, Beef, Tomato Sauce",
+            "allergen": "Gluten"
+        },
+        "Protein Shake": {
+            "ingredients": "Milk, Whey Protein, Banana",
+            "allergen": "Dairy"
+        }
+    }
 
     conn = sqlite3.connect(DB_FOODS)
     cursor = conn.cursor()
 
-    # February 2026 date range
     start_date = datetime.datetime(2026, 2, 1)
     end_date = datetime.datetime(2026, 2, 28)
 
-    for user_id in range(1, 11):  # Users 1–10
-        num_entries = random.randint(1, 10)
-        category = "[]"
+    for user_id in range(1, 11):
+        num_entries = random.randint(3, 10)
 
         for _ in range(num_entries):
-            food = random.choice(foods)
+            food = random.choice(list(food_data.keys()))
             quantity = random.randint(1, 5)
 
-            # Random date in February 2026
+            ingredients = food_data[food]["ingredients"]
+            allergen = food_data[food]["allergen"]
+
             random_seconds = random.randint(
                 0,
                 int((end_date - start_date).total_seconds())
@@ -88,9 +112,17 @@ def generate_sample_data():
             random_date = start_date + datetime.timedelta(seconds=random_seconds)
 
             cursor.execute("""
-                INSERT INTO food_diary (user_id, food_name, quantity, category,creation_date)
-                VALUES (?, ?, ?, ?, ?)
-            """, (user_id, food, quantity,category, random_date.isoformat()))
+                INSERT INTO food_diary 
+                (user_id, food_name, quantity, ingredients, allergen, creation_date)
+                VALUES (?, ?, ?, ?, ?, ?)
+            """, (
+                user_id,
+                food,
+                quantity,
+                ingredients,
+                allergen,
+                random_date.isoformat()
+            ))
 
     conn.commit()
     conn.close()
@@ -148,10 +180,10 @@ class ManageFood:
 
 
 if __name__ == "__main__":
-    # create_database()
-    # generate_sample_data()
-    ManageFood_Class = ManageFood(DB_FOODS)
-    # # ManageFood_Class.add_item(2,"Shrimp", 5)
-    # # ManageFood_Class.delete_item(72)
+    create_database()
+    generate_sample_data()
+    # ManageFood_Class = ManageFood(DB_FOODS)
+    # ManageFood_Class.add_item(2,"Shrimp", 5)
+    # ManageFood_Class.delete_item(72)
     # items = ManageFood_Class.list_items_userid(2)
     # print(items)
