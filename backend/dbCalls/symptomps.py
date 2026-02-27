@@ -8,31 +8,30 @@ import random
 from pathlib import Path
 import datetime
 
+# id
+# user_id
+# symptom_name
+# severity (1–5)
+# timestamp
+
+
 BASE_DIR = Path(__file__).resolve().parent
-DB_USERS = BASE_DIR / "users.db"
-DB_FOODS = BASE_DIR / "foods.db"
+DB_USERS =  BASE_DIR / "DB" /  "users.db"
+DB_FOODS =  BASE_DIR / "DB" /  "foods.db"
+DB_SYMPTOM = BASE_DIR / "DB" / "symptom.db"
 
 
 def create_database():
-    conn = sqlite3.connect(DB_FOODS)
+    conn = sqlite3.connect(DB_SYMPTOM)
     cursor = conn.cursor()
 
-    # Food table
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS food_diary (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id INTEGER NOT NULL,
-            food_name TEXT NOT NULL,
-            quantity INTEGER NOT NULL,
-            creation_date TEXT NOT NULL
-        )
-    """)
 
     # Symptoms table
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS symptoms (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER NOT NULL,
+            severity INTEGER NOT NULL,
             symptom TEXT NOT NULL,
             creation_date TEXT NOT NULL
         )
@@ -56,7 +55,7 @@ def generate_symptom_data():
         "Sharp Abdominal Pain"
     ]
 
-    conn = sqlite3.connect(DB_FOODS)
+    conn = sqlite3.connect(DB_SYMPTOM)
     cursor = conn.cursor()
 
     start_date = datetime.datetime(2026, 2, 1)
@@ -82,3 +81,56 @@ def generate_symptom_data():
 
     conn.commit()
     conn.close()
+
+class ManageSymptom:
+    def __init__(self):
+        pass
+
+
+    def add_item(self, user_id, food_name,category, quantity):
+        conn = sqlite3.connect(DB_SYMPTOM)
+        cursor = conn.cursor()
+
+        cursor.execute(
+            """
+            INSERT INTO food_diary (user_id, food_name, quantity, creation_date)
+            VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
+            """,
+            (user_id, food_name, category, quantity)
+        )
+
+        conn.commit()
+        conn.close()
+
+    def delete_item(self,item_id):
+        conn = sqlite3.connect(DB_FOODS)
+        cursor = conn.cursor()
+
+        cursor.execute(
+            "DELETE FROM food_diary WHERE id = ?",
+            (item_id,)
+        )
+
+        conn.commit()
+        conn.close()
+
+
+    def list_items_userid(self,user_id):
+        conn = sqlite3.connect(DB_FOODS)
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+
+        cursor.execute(
+            "SELECT creation_date, food_name, quantity FROM food_diary WHERE user_id = ?",
+            (user_id,)
+        )
+
+        items = [dict(row) for row in cursor.fetchall()]
+
+        conn.close()
+        return items
+
+if __name__ == "__main__":
+    pass
+    # create_database()
+    # generate_symptom_data()
