@@ -58,7 +58,7 @@ def add_food(user_id: int, food: FoodItem):
 @router.post("/addsymp/{user_id}")
 def add_symp(user_id: int, symp: SympItem):
     try:
-        item = ManageSyn.add_item(
+        item = ManageSymptom_Class.add_item(
             user_id=user_id,
             severity=symp.severity,
             symptom=symp.symptom,
@@ -71,11 +71,13 @@ def add_symp(user_id: int, symp: SympItem):
 
 
 @router.post("/ai_suggestion/{user_id}")
-def add_symp(user_id: int):
+def add_symp_aires(user_id: int):
     try:
         foods = ManageFood_Class.get_items(user_id)
         symptoms = ManageSymptom_Class.get_items(user_id)
         ai_res = analyze_correlation(foods, symptoms)
+        print("ai result:")
+        print(ai_res)
         return {"status": "success", "item": ai_res}
     except Exception as e:
         return  {"status": "error", "message": e}

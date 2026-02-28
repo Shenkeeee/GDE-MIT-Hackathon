@@ -1,6 +1,35 @@
+import { useEffect, useState } from "react";
+
 import { FaUtensils } from "react-icons/fa";
 
 const Correlation = () => {
+
+  const [aiInsight, setAiInsight] = useState("");
+
+  const handleCorrelationRequest = () => {
+    fetch(
+      `${import.meta.env.VITE_API_URL}/dashboard/ai_suggestion/${sessionStorage.getItem("userId")}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: sessionStorage.getItem("userId") }),
+      },
+    )
+      .then((res) => res.json())
+      .then((data: {status: "success", item: string}) => {
+        console.log("result is ", data);
+        setAiInsight(data.item)
+      })
+      .catch((err) => console.error(err));
+  };
+
+  // get it as soon as u see this component, once
+  useEffect(() => {
+    handleCorrelationRequest();
+  }, []);
+
   return (
     <div className="flex-1 flex flex-col justify-between">
       {/* TOP GRID 1 1 2 */}
@@ -47,9 +76,7 @@ const Correlation = () => {
           </div>
 
           <p className="leading-relaxed text-sm">
-            Strong positive correlation detected between gluten intake and
-            bloating within a 3-hour window. Suggested trial elimination for 7
-            days.
+            {aiInsight}
           </p>
         </div>
       </div>
