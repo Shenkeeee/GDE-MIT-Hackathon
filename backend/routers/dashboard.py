@@ -7,6 +7,7 @@ from dbCalls.fooddata import ManageFood_Class
 from dbCalls.symptomps import ManageSymptom_Class
 from AI.AI_test import *
 
+from fastapi import Request
 # call it by prefix when fetching
 router = APIRouter(prefix="/api/dashboard", tags=["dashboard"])
 
@@ -70,12 +71,60 @@ def add_symp(user_id: int, symp: SympItem):
 
 
 @router.post("/ai_suggestion/{user_id}")
-def ai_res(user_id: int):
+def ai_res(user_id: int, request: Request):
+    try:
+        if request.session.get("ai_generated"):
+            return {
+                "status": "skipped",
+                "message": "AI suggestion already generated in this session."
+            }
+
+        foods = ManageFood_Class.get_items(user_id)
+        symptoms = ManageSymptom_Class.get_items(user_id)
+        # ai_result = analyze_correlation(foods, symptoms)
+        ai_result = "No AI res"
+
+        request.session["ai_generated"] = True
+
+        return {"status": "success", "item": ai_result}
+
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+    
+
+    
+
+from datetime import datetime, timedelta, timezone
+
+@router.post("/correlation/{user_id}")
+def correlation(user_id: int):
     try:
         foods = ManageFood_Class.get_items(user_id)
         symptoms = ManageSymptom_Class.get_items(user_id)
-        ai_res = analyze_correlation(foods, symptoms)
-        print("Ai res", ai_res)
-        return {"status": "success", "item": ai_res}
+
+        correlation_points = []
+
+        for food in foods:
+            # Force UTC aware
+            food_time = datetime.fromisoformat(food["creation_date"]).replace(tzinfo=timezone.utc)
+
+            for sym in symptoms:
+                sym_time = datetime.fromisoformat(sym["creation_date"]).replace(tzinfo=timezone.utc)
+
+                time_diff = sym_time - food_time
+
+                if timedelta(0) <= time_diff <= timedelta(hours=6):
+                    correlation_points.append({
+                        "food": food["food_name"],
+                        "quantity": food["quantity"],
+                        "severity": sym["severity"],
+                        "symptom": sym["symptom"]
+                    })
+
+        return {
+            "status": "success",
+            "data": correlation_points
+        }
+
     except Exception as e:
-        return  {"status": "error", "message": e}
+        return {"status": "error", "message": str(e)}

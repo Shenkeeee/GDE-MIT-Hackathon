@@ -56,49 +56,56 @@ client = AzureOpenAI(
 
 
 def analyze_correlation(food_items, symptom_items):
-        prompt = f"""
-    You are a medical assistant analyzing possible food and symptom correlations.
+        
+    test = True 
+    if test:
+            prompt = f"""
+        You are a medical assistant analyzing possible food and symptom correlations.
 
-    IMPORTANT RULES:
-    - Never diagnose diseases.
-    - Only provide advice and possible correlations.
-    - Give long detailed advice.
-    - Consider allergens seriously.
+        IMPORTANT RULES:
+        - Never diagnose diseases.
+        - Only provide advice and possible correlations.
+        - Consider allergens seriously.
 
-    Task:
-    Compare food intake and symptoms by date and time.
+        - ONLY GIVE BACK 10 SENTENCES
 
-    Food Items:
-    {food_items}
+        Task:
+        Compare food intake and symptoms by date and time.
 
-    Symptoms:
-    {symptom_items}
+        Food Items:
+        {food_items}
 
-    Provide short answer to:
-    1. Possible correlations
-    2. Possible allergens or food triggers
-    3. What user should do next
-    4. Lifestyle and dietary advice
-    """
+        Symptoms:
+        {symptom_items}
 
-        try:
-            response = client.chat.completions.create(
-                model=deployment,
-                max_completion_tokens=2000,
-                messages=[
-                    {
-                        "role": "system",
-                        "content": "You are a medical AI assistant that gives long helpful explanations."
-                    },
-                    {
-                        "role": "user",
-                        "content": prompt
-                    }
-                ]
-            )
+        Provide short answer to:
+        1. Possible correlations
+        2. Possible allergens or food triggers
+        3. What user should do next
+        4. Lifestyle and dietary advice
+        """
 
-            # Extract and return text
-            return response.choices[0].message.content
+            try:
+                response = client.chat.completions.create(
+                    model=deployment,
+                    max_completion_tokens=2000,
+                    messages=[
+                        {
+                            "role": "system",
+                            "content": "You are a medical AI assistant that gives long helpful explanations."
+                        },
+                        {
+                            "role": "user",
+                            "content": prompt
+                        }
+                    ]
+                )
 
-        except Exception as e:
-            return f"Error: {e}"
+                # Extract and return text
+                return response.choices[0].message.content
+
+            except Exception as e:
+                return f"Error: {e}"
+    else:
+        
+            return "No Answer from AI"
