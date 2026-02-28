@@ -203,4 +203,4 @@ if __name__ == "__main__":
     # print(ManageUser_Class.get_name_by_id(1))
     
 
-UserCretor_Class = ManageUser()
+ManageUser_Class = ManageUser()

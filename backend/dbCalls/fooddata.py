@@ -223,9 +223,9 @@ if __name__ == "__main__":
     # print(items)
 
 
-name = "Burrito"
-name, ingredients, allergen = test(name)
-print("ing", ingredients)
-print("all:", allergen)
+# name = "Burrito"
+# name, ingredients, allergen = test(name)
+# print("ing", ingredients)
+# print("all:", allergen)
 
 ManageFood_Class = ManageFood()
