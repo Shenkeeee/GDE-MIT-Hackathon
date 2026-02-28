@@ -133,7 +133,7 @@ def correlation(user_id: int):
                         }
                     )
 
-        return {"status": "success", "data": correlation_points}
+        return {"status": "success", "data": correlation_points, "symptoms": symptoms, "foods": foods}
 
     except Exception as e:
         return {"status": "error", "message": str(e)}
