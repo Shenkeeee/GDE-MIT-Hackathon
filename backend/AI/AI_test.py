@@ -56,7 +56,6 @@ client = AzureOpenAI(
 
 
 def analyze_correlation(food_items, symptom_items):
-
         prompt = f"""
     You are a medical assistant analyzing possible food and symptom correlations.
 
@@ -75,7 +74,7 @@ def analyze_correlation(food_items, symptom_items):
     Symptoms:
     {symptom_items}
 
-    Provide:
+    Provide short answer to:
     1. Possible correlations
     2. Possible allergens or food triggers
     3. What user should do next
@@ -86,7 +85,6 @@ def analyze_correlation(food_items, symptom_items):
             response = client.chat.completions.create(
                 model=deployment,
                 max_completion_tokens=2000,
-                stream=True,
                 messages=[
                     {
                         "role": "system",
@@ -99,15 +97,8 @@ def analyze_correlation(food_items, symptom_items):
                 ]
             )
 
-            print("\n--- AI Analysis ---")
-
-            for update in response:
-                if update.choices:
-                    content = update.choices[0].delta.content
-                    if content:
-                        print(content, end="", flush=True)
-
-            print("\n")
+            # Extract and return text
+            return response.choices[0].message.content
 
         except Exception as e:
-            print(f"Error: {e}")
+            return f"Error: {e}"

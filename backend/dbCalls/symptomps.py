@@ -166,4 +166,5 @@ if __name__ == "__main__":
     # create_database()
     # generate_symptom_data()    
 
+
 ManageSymptom_Class = ManageSymptom()
