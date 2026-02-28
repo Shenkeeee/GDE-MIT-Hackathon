@@ -7,6 +7,7 @@ import sqlite3
 import random
 from pathlib import Path
 import datetime
+from AI.aicall import *
 
 
 # FOOD
@@ -210,11 +211,14 @@ class ManageFood:
 if __name__ == "__main__":
     pass
     # create_database()
-    # generate_sample_data()
+    # # generate_sample_data()
+    # name = "Burrito"
+    # name, ingredients, allergen = test(name)
+    # print(ingredients, allergen)
     # ManageFood_Class = ManageFood(DB_FOODS)
-    # ManageFood_Class.add_item(2,"Shrimp", 5)
-    # ManageFood_Class.delete_item(72)
-    # items = ManageFood_Class.list_items_userid(2)
+    # # ManageFood_Class.add_item(2,"Shrimp", 5)
+    # # ManageFood_Class.delete_item(72)
+    # items = ManageFood_Class.list_items_userid(1)
     # print(items)
 
 ManageFood_Class = ManageFood()

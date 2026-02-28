@@ -2,8 +2,16 @@ import csv
 import json
 from openai import AzureOpenAI
 from pathlib import Path
+from dotenv import load_dotenv
+import os
 
-# --- KONFIGURÁCIÓ ---
+load_dotenv()
+
+# Azure config
+endpoint = os.getenv("AZURE_ENDPOINT")
+deployment = "gpt-5.2-chat"
+subscription_key = os.getenv("AZURE_API_KEY")
+api_version = "2024-12-01-preview"
 
 
 # --- CSV ÚTVONAL ---
