@@ -138,7 +138,7 @@ class ManageFood:
             INSERT INTO food_diary (user_id, food_name, quantity, ingredients, allergen, creation_date)
             VALUES (?, ?, ?, ?, ?, ?)
             """,
-            (user_id, food_name, ingredients, allergen, quantity, creation_date),
+            (user_id, food_name, quantity, ingredients, allergen, creation_date),
         )
 
         conn.commit()
