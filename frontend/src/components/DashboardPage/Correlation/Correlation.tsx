@@ -12,6 +12,7 @@ interface SymptomItem {
   severity: number;
   creation_date: string;
 }
+import AiInsightDisplay from "./AiInsightDisplay/AinsightDisplay";
 
 interface CorrelationPoint {
   food: string;
@@ -178,8 +179,8 @@ const Correlation = () => {
 
           <div className="relative h-72 border rounded-xl bg-white">
 
-            <div className="absolute top-1/2 left-0 w-full h-[1px] bg-gray-200" />
-            <div className="absolute left-1/2 top-0 h-full w-[1px] bg-gray-200" />
+            <div className="absolute top-1/2 left-0 w-full h-px bg-gray-200" />
+            <div className="absolute left-1/2 top-0 h-full w-px bg-gray-200" />
 
             {aggregated.map((point: any, index) => {
 
@@ -278,16 +279,14 @@ Frequency: ${point.frequency}`}
         </div>
 
         {/* ================= AI INSIGHT ================= */}
-        <div className="bg-gradient-to-br from-lime-300 to-green-400 rounded-3xl p-10 shadow-lg text-[#083d2a]">
+        <div className="bg-linear-to-br from-lime-300 to-green-400 rounded-3xl p-10 shadow-lg text-[#083d2a]">
 
           <div className="flex items-center gap-3 mb-6">
             <FaUtensils className="text-2xl" />
             <h3 className="text-xl font-semibold">AI Insight</h3>
           </div>
 
-          <p className="text-sm whitespace-pre-wrap">
-            {aiInsight || "Analyzing patterns..."}
-          </p>
+          <AiInsightDisplay aiInsight={aiInsight?.replace(/\*\*/g, "")?.replace(/\*\*/g, "")} />
 
         </div>
 
@@ -304,7 +303,7 @@ Frequency: ${point.frequency}`}
           </h3>
         </div>
 
-        <div className="overflow-auto max-h-[400px]">
+        <div className="overflow-auto max-h-100">
 
           <table className="w-full text-xs border-collapse">
 
