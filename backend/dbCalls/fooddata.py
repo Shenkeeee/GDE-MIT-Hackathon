@@ -7,7 +7,6 @@ import sqlite3
 import random
 from pathlib import Path
 import datetime
-from AI.aicall import *
 
 
 # FOOD
