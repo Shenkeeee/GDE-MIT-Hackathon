@@ -93,43 +93,68 @@ class ManageSymptom:
         pass
 
 
-    def add_item(self, user_id, food_name,category, quantity):
+    def add_item(self, user_id, severity,symptom, creation_date):
         conn = sqlite3.connect(DB_SYMPTOM)
         cursor = conn.cursor()
 
         cursor.execute(
             """
-            INSERT INTO food_diary (user_id, food_name, quantity, creation_date)
-            VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
+            INSERT INTO symptoms (user_id, severity, symptom, creation_date)
+            VALUES (?, ?, ?, ?)
             """,
-            (user_id, food_name, category, quantity)
+            (user_id, severity, symptom, creation_date)
         )
 
         conn.commit()
         conn.close()
+        return {"status": "sucess"}
 
-    def delete_item(self,item_id):
-        conn = sqlite3.connect(DB_FOODS)
+    def modify_item(self, item_id, user_id, severity, symptom, creation_date):
+        conn = sqlite3.connect(DB_SYMPTOM)
         cursor = conn.cursor()
 
         cursor.execute(
-            "DELETE FROM food_diary WHERE id = ?",
+            """
+            UPDATE symptoms
+            SET user_id = ?,
+                severity = ?,
+                symptom = ?,
+                creation_date = ?
+            WHERE id = ?
+            """,
+            (user_id, severity, symptom, creation_date, item_id)
+        )
+
+        updated = cursor.rowcount
+
+        conn.commit()
+        conn.close()
+
+        if updated == 0:
+            return {"error": "not found"}
+        return {"status": "sucess"}
+
+    def delete_item(self,item_id):
+        conn = sqlite3.connect(DB_SYMPTOM)
+        cursor = conn.cursor()
+
+        cursor.execute(
+            "DELETE FROM symptoms WHERE id = ?",
             (item_id,)
         )
 
         conn.commit()
         conn.close()
 
+        return {"status": "sucess"}
 
-    def list_items_userid(self,user_id):
-        conn = sqlite3.connect(DB_FOODS)
+
+    def get_items(self, user_id):
+        conn = sqlite3.connect(DB_SYMPTOM)
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
 
-        cursor.execute(
-            "SELECT creation_date, food_name, quantity FROM food_diary WHERE user_id = ?",
-            (user_id,)
-        )
+        cursor.execute("SELECT * FROM symptoms WHERE user_id = ?", (user_id,))
 
         items = [dict(row) for row in cursor.fetchall()]
 

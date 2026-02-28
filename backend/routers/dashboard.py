@@ -16,5 +16,7 @@ def get_first_name(user_id: int):
 
 @router.post("/fooddata/{user_id}")
 def get_food_items(user_id: int):
-    items = ManageFood_Class.list_items_userid(user_id)
+    items = ManageFood_Class.get_items(user_id)
     return items
+
+
