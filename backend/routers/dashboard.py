@@ -80,21 +80,11 @@ def add_symp(user_id: int, symp: SympItem):
 @router.post("/ai_suggestion/{user_id}")
 def ai_res(user_id: int, request: Request):
     try:
-        if request.session.get("ai_generated"):
-            return {
-                "status": "skipped",
-                "message": "AI suggestion already generated in this session.",
-            }
-
         foods = ManageFood_Class.get_items(user_id)
         symptoms = ManageSymptom_Class.get_items(user_id)
-        # ai_result = analyze_correlation(foods, symptoms)
-        ai_result = "No AI res"
-
-        request.session["ai_generated"] = True
+        ai_result = analyze_correlation(foods, symptoms)
 
         return {"status": "success", "item": ai_result}
-
     except Exception as e:
         return {"status": "error", "message": str(e)}
 

@@ -35,13 +35,13 @@ const TopBar = ({ userName }) => {
 
       <div className="flex gap-4">
         <button
-          className="px-5 py-2 rounded-full bg-green-600 hover:bg-green-700 transition"
+          className="px-5 py-2 rounded-full bg-green-600 hover:bg-green-700 transition hover:cursor-pointer"
           onClick={() => setShowAddFood(true)}
         >
           Add Food
         </button>
         <button
-          className="px-5 py-2 rounded-full bg-red-500 hover:bg-red-600 transition"
+          className="px-5 py-2 rounded-full bg-red-500 hover:bg-red-600 transition hover:cursor-pointer"
           onClick={() => setShowAddSympthoms(true)}
         >
           Add Symptom

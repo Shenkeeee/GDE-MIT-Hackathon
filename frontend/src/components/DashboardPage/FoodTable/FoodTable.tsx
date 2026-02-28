@@ -127,7 +127,7 @@ const TableFood = () => {
                   <div className="flex justify-end gap-4">
                     <button
                       onClick={() => handleEdit(item)}
-                      className="text-blue-600 hover:cursor-pointer transition"
+                      className="text-green-600 hover:cursor-pointer transition"
                     >
                       <FaEdit size={20} />
                     </button>
