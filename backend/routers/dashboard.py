@@ -5,7 +5,7 @@ from dbCalls.usersCalls import UserCretor_Class
 from dbCalls.fooddata import ManageFood_Class
 
 # call it by prefix when fetching
-router = APIRouter(prefix="/dashboard", tags=["dashboard"])
+router = APIRouter(prefix="/api/dashboard", tags=["dashboard"])
 
 
 @router.post("/{user_id}")
