@@ -1,38 +1,37 @@
 import { useEffect, useState } from "react";
-
 import { FaEdit, FaTrash } from "react-icons/fa";
 
-type Food = {
+type Symptom = {
   id: number;
   user_id: number;
-  food_name: string;
-  ingredients: string;
-  allergens: string;
-  quantity: string;
+  severity: number;
+  symptom: string;
   creation_date: string;
 };
 
-const ingredientsColor = (ingredients: string) => {
-  switch (ingredients.toLowerCase()) {
-    case "carb":
-      return "bg-yellow-100 text-yellow-800";
-    case "dairy":
-      return "bg-blue-100 text-blue-800";
-    case "protein":
-      return "bg-red-100 text-red-800";
-    case "vegetable":
-      return "bg-green-100 text-green-800";
+const severityColor = (severity: number) => {
+  switch (severity) {
+    case 1:
+      return "bg-green-100 text-green-800"; // very mild
+    case 2:
+      return "bg-lime-100 text-lime-800"; // mild
+    case 3:
+      return "bg-yellow-100 text-yellow-800"; // moderate
+    case 4:
+      return "bg-orange-100 text-orange-800"; // high
+    case 5:
+      return "bg-red-100 text-red-800"; // severe
     default:
       return "bg-gray-100 text-gray-700";
   }
 };
 
-const TableFood = () => {
-  const [data, setData] = useState<Food[]>([]);
+const TableSymptoms = () => {
+  const [data, setData] = useState<Symptom[]>([]);
 
-  const handleFoodTableRequest = () => {
+  const handleSymptomsRequest = () => {
     fetch(
-      `${import.meta.env.VITE_API_URL}/dashboard/fooddata/${sessionStorage.getItem("userId")}`,
+      `${import.meta.env.VITE_API_URL}/dashboard/symptomData/${sessionStorage.getItem("userId")}`,
       {
         method: "POST",
         headers: {
@@ -42,50 +41,46 @@ const TableFood = () => {
       },
     )
       .then((res) => res.json())
-      .then((data: Food[]) => {
+      .then((data: Symptom[]) => {
         setData(data);
       })
       .catch((err) => console.error(err));
   };
 
   useEffect(() => {
-    handleFoodTableRequest();
+    handleSymptomsRequest();
   }, []);
 
   const handleDelete = (id: number) => {
-    // later -> call backend
     setData((prev) => prev.filter((item) => item.id !== id));
   };
 
-  const handleEdit = (food: Food) => {
-    // later -> open modal / route
-    console.log("Edit clicked:", food);
+  const handleEdit = (symptom: Symptom) => {
+    console.log("Edit clicked:", symptom);
   };
 
   const formatDate = (date: Date) => {
-    const formatted = date.toLocaleString("en-US", {
+    return date.toLocaleString("en-US", {
       year: "numeric",
       month: "long",
       day: "numeric",
       hour: "2-digit",
       minute: "2-digit",
-      second: "2-digit",
     });
-
-    return formatted;
   };
 
   return (
     <div className="bg-white/70 backdrop-blur-md rounded-3xl p-10 shadow-xl h-[65vh] flex flex-col">
-      <h2 className="text-2xl font-semibold text-[#0f3d2e] mb-8">Food Log</h2>
+      <h2 className="text-2xl font-semibold text-[#0f3d2e] mb-8">
+        Symptoms Log
+      </h2>
 
       <div className="flex-1 overflow-auto">
         <table className="w-full text-left border-separate border-spacing-y-3">
           <thead>
             <tr className="text-sm text-gray-500">
-              <th className="pb-3">Food</th>
-              <th className="pb-3">Ingredients</th>
-              <th className="pb-3">Quantity</th>
+              <th className="pb-3">Symptom</th>
+              <th className="pb-3">Severity</th>
               <th className="pb-3">Time</th>
               <th className="pb-3 text-right">Actions</th>
             </tr>
@@ -94,7 +89,7 @@ const TableFood = () => {
           <tbody>
             {data.length === 0 && (
               <tr className="text-center text-gray-400 py-10">
-                <td>No food entries yet.</td>
+                <td colSpan={4}>No symptoms recorded yet.</td>
               </tr>
             )}
 
@@ -104,20 +99,18 @@ const TableFood = () => {
                 className="bg-white rounded-2xl shadow-sm hover:shadow-md transition"
               >
                 <td className="px-4 py-4 font-medium text-[#0f3d2e] rounded-l-2xl">
-                  {item.food_name}
+                  {item.symptom}
                 </td>
 
                 <td className="px-4 py-4">
                   <span
-                    className={`px-3 py-1 text-xs rounded-full font-medium ${ingredientsColor(
-                      item.ingredients,
+                    className={`px-3 py-1 text-xs rounded-full font-medium ${severityColor(
+                      item.severity,
                     )}`}
                   >
-                    {item.ingredients}
+                    {item.severity}/5
                   </span>
                 </td>
-
-                <td className="px-4 py-4 text-gray-600">{item.quantity}</td>
 
                 <td className="px-4 py-4 text-gray-500 text-sm">
                   {formatDate(new Date(item.creation_date))}
@@ -149,4 +142,4 @@ const TableFood = () => {
   );
 };
 
-export default TableFood;
+export default TableSymptoms;

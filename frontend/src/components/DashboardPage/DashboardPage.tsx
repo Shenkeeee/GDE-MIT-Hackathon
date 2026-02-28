@@ -5,25 +5,20 @@ import TableFood from "./FoodTable/FoodTable";
 import TopBar from "./TopBar/TopBar";
 
 import { FaFilter } from "react-icons/fa";
+import TableSymptoms from "./SymptomsTable/SymptomsTable";
 
 const DashboardPage = () => {
-  type Tab =
-    | "correlation"
-    | "food"
-    | "symptoms"
-    | "table food"
-    | "table symptoms";
+  type Tab = "correlation" | "table food" | "table symptoms";
 
   const tabMap = {
     Correlation: "correlation",
-    Food: "food",
-    Symptoms: "symptoms",
-    "Table Food": "table food",
-    "Table Symptoms": "table symptoms",
+    "My Food Log": "table food",
+    "My Symptom Log": "table symptoms",
   } as const;
 
   const [activeTab, setActiveTab] = useState<Tab>("correlation");
   const [userName, setUserName] = useState("Joe");
+  const [aiInsight, setAiInsight] = useState<string | null>(null);
 
   const handleDashboardRequest = () => {
     fetch(
@@ -87,8 +82,11 @@ const DashboardPage = () => {
           </div>
         </div>
 
-        {activeTab === "correlation" && <Correlation />}
+        {activeTab === "correlation" && (
+          <Correlation />
+        )}
         {activeTab === "table food" && <TableFood />}
+        {activeTab === "table symptoms" && <TableSymptoms />}
       </div>
     </div>
   );

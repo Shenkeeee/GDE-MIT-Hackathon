@@ -1,4 +1,9 @@
-# GDE MIT Hackathon entry
+# BREAD CRAMPS
+
+## WELCOME
+
+VIDEO: https://youtu.be/DlYwLdJ8bWQ
+DEPLOYED LINK: https://bimestrial-unperpetuating-archie.ngrok-free.dev
 
 ## Team
 
@@ -17,10 +22,18 @@ Timea Subicz, Mate Subicz, Benjamin Tako
   - `cd backend`
   - On first install:
     - create virtual env for packages: `python -m venv .venv`.
-    - download required packages with `pip install fastapi uvicorn` (and everything else that comes up at runtime)
+    - download required packages after activation with `pip install fastapi uvicorn` (and everything else that comes up at runtime)
   - Then activate venv: for bash terminal: `source ./.venv/Scripts/activate` (or on older versions "source ./.venv/bin/activate"), for powershell terminal: `.venv\Scripts\Activate.ps1`
   - check if you have done it correctly: bash style: `which python`, powershell style: `Get-Command python` => You should see that python is ran from .venv folder
   - run `uvicorn main:app --reload`
+
+## Deploy - prod
+
+1. Change .env in frontend to PROD
+1. Change main.py to PROD
+1. build frontend with `pnpm run build`
+1. run backend with `uvicorn main:app --host 0.0.0.0 --port 8000`
+1. deploy with `ngrok http 8000`
 
 ### Auto-terminal initialization
 
