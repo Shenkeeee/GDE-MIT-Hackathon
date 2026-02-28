@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
 # call it by prefix when fetching
-router = APIRouter(prefix="/items", tags=["items"])
+router = APIRouter(prefix="/api/items", tags=["items"])
 
 
 @router.get("/hello")

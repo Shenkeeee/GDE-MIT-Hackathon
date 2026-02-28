@@ -397,4 +397,4 @@ Lemon Bars,Lemon juice,Sugar,Butter,"Flour, eggs","Wheat, Dairy, Eggs",Contains
 Pecan Pie,Pecans,Sugar,Butter,Corn syrup,"Wheat, Dairy, Nuts",Contains
 Zucchini Bread,Zucchini,Sugar,Butter,"Cinnamon, nuts","Wheat, Dairy, Nuts",Contains
 Banana Bread,Bananas,Sugar,Butter,"Cinnamon, nuts","Wheat, Dairy, Nuts",Contains
-Hawaiian Pizza,Pizza dough,None,None,"Pineapple, ham","Wheat, Pork, Dairy",ContainsBurrito,"Flour tortilla filled with rice, beans, and choice of meat (such as beef, chicken, or pork)",None,"Vegetable oil or lard (used in cooking meat, beans, or tortilla)","Salt, cumin, chili powder, garlic, onion, cilantro","['Wheat (gluten)', 'Dairy (if cheese or sour cream is included)', 'Soy (possible in processed ingredients)']",High in calories and carbohydrates; can be high in protein but may also contain significant fat and sodium depending on ingredients.
+Hawaiian Pizza,Pizza dough,None,None,"Pineapple, ham","Wheat, Pork, Dairy",Contains

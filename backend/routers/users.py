@@ -6,7 +6,7 @@ from dbCalls.usersCalls import ManageUser
 UserCretor_Class = ManageUser()
 
 # call it by prefix when fetching
-router = APIRouter(prefix="/users", tags=["users"])
+router = APIRouter(prefix="/api/users", tags=["users"])
 
 
 @router.get("/hello")
