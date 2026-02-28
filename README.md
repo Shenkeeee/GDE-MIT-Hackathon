@@ -1,4 +1,9 @@
-# GDE MIT Hackathon entry
+# BREAD CRAMPS
+
+## WELCOME
+
+VIDEO: https://youtu.be/DlYwLdJ8bWQ
+DEPLOYED LINK: https://bimestrial-unperpetuating-archie.ngrok-free.dev
 
 ## Team
 
