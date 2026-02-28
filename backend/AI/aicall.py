@@ -18,7 +18,7 @@ api_version = "2024-12-01-preview"
 BASE_DIR = Path(__file__).resolve().parent.parent 
 CSV_PATH = BASE_DIR.parent / "other" / "FOOD_DATASETS" / "food_ingredients_and_allergens.csv"
 
-FIELDS = ["Food Product", "Main Ingredient", "Sweetener", "Fat/Oil", "Seasoning", "Allergens", "Prediction"]
+FIELDS = ["Ingredients, Allergens"]
 
 def test(food_to_find):
     # 1. Ellenőrzés a CSV-ben

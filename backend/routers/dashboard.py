@@ -30,6 +30,13 @@ class FoodItem(BaseModel):
     creation_date: datetime
 
 
+class SympItem(BaseModel):
+    severity: int = 1
+    symptomps: str | None = None
+    allergen: str | None = None
+    creation_date: datetime
+
+
 # POST endpoint to add food for a user
 @router.post("/addfood/{user_id}")
 def add_food(user_id: int, food: FoodItem):
@@ -41,6 +48,19 @@ def add_food(user_id: int, food: FoodItem):
             allergen="",
             quantity=food.quantity,
             creation_date=food.creation_date,
+        )
+        return {"status": "success", "item": item}
+    except Exception as e:
+        return  {"status": "error", "message": e}
+    
+@router.post("/addsymp/{user_id}")
+def add_symp(user_id: int, symp: SympItem):
+    try:
+        item = ManageFood_Class.add_item(
+            user_id=user_id,
+            severity=symp.severity,
+            symptomps=symp.symptomps,
+            creation_date=symp.creation_date,
         )
         return {"status": "success", "item": item}
     except Exception as e:

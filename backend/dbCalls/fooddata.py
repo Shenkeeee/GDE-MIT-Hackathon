@@ -222,4 +222,10 @@ if __name__ == "__main__":
     # items = ManageFood_Class.list_items_userid(1)
     # print(items)
 
+
+name = "Burrito"
+name, ingredients, allergen = test(name)
+print("ing", ingredients)
+print("all:", allergen)
+
 ManageFood_Class = ManageFood()
