@@ -2,13 +2,19 @@ import os
 from openai import AzureOpenAI
 from dotenv import load_dotenv
 
-load_dotenv()
+from pathlib import Path
+BASE_DIR = Path(__file__).resolve().parent
+load_dotenv(dotenv_path=BASE_DIR / ".env")
 
 # Azure config
 endpoint = os.getenv("AZURE_ENDPOINT")
 deployment = "gpt-5.2-chat"
 subscription_key = os.getenv("AZURE_API_KEY")
 api_version = "2024-12-01-preview"
+
+if(endpoint == None):
+    print("Env files not found")
+    endpoint = ""
 
 print("Done")
 
