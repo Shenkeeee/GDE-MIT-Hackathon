@@ -65,13 +65,15 @@ class ManageUser:
         conn.close()
 
         if deleted == 0:
-            return "Item not found"
-        return "Item deleted successfully"
+            return {"error": "not found"}
+        return {"status": "sucess"}
     
 
     def modify_item(self, item_id, email, first, last, pwd):
         conn = sqlite3.connect(DB_USERS)
         cursor = conn.cursor()
+
+        hashed_pwd = self.hash_password(pwd)
 
         cursor.execute(
             """
@@ -79,7 +81,7 @@ class ManageUser:
             SET email = ?, first = ?, last = ?, pwd = ?
             WHERE id = ?
             """,
-            (email, first, last, pwd, item_id)
+            (email, first, last, hashed_pwd, item_id)
         )
 
         updated = cursor.rowcount
@@ -88,8 +90,8 @@ class ManageUser:
         conn.close()
 
         if updated == 0:
-            return "Item not found"
-        return "Item updated successfully"
+            return {"error": "not found"}
+        return {"status": "sucess"}
 
     def hash_password(self, password):
         return hashlib.sha256(password.encode()).hexdigest()
@@ -162,7 +164,7 @@ class ManageUser:
         row = cursor.fetchone()
 
         conn.close()
-        return 
+        return {"status": "sucess"}
     
     def get_name_by_id(self, item_id):
       conn = sqlite3.connect(DB_USERS)

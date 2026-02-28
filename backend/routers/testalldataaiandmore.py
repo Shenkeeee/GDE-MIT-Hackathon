@@ -75,9 +75,16 @@ ManageSymptom_Class = ManageSymptom()
 # ManageSymptom_Class.delete_item(2)
 
 #################### MODIFY ITEM #######################
-ManageUser_Class.modify_item("3", "2", "2","2", "2")
+# ManageUser_Class.modify_item("3", "2", "2","2", "2")
+# ManageFood_Class.modify_item(3,2,2,2,2,2,2)
+# ManageSymptom_Class.modify_item(3,2,2,2,2)
 
 
-#################### GET ITEM #######################
+#################### GET ITEM(S) #######################
+# result = ManageUser_Class.get_name_by_id(3)
+# result = ManageFood_Class.get_items(3)
+# result = ManageSymptom_Class.get_items(3)
+
+# print(result)
 
 
