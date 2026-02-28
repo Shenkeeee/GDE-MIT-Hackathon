@@ -12,3 +12,4 @@ AI/textv2.py
 AI/textv2.py
 
 **/*.db
+.env
