@@ -13,7 +13,7 @@ const Home = () => {
         <RegisterModal
           open={openRegister}
           onClose={() => setOpenRegister(false)}
-          // onSwitchToLogin={() => setOpenLogin(true)}
+          onSwitchToLogin={() => setOpenLogin(true)}
         />
       )}
 
