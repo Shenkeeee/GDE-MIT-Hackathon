@@ -8,6 +8,7 @@ from dbCalls.symptomps import ManageSymptom_Class
 from AI.AI_test import *
 
 from fastapi import Request
+
 # call it by prefix when fetching
 router = APIRouter(prefix="/api/dashboard", tags=["dashboard"])
 
@@ -21,6 +22,12 @@ def get_first_name(user_id: int):
 @router.post("/fooddata/{user_id}")
 def get_food_items(user_id: int):
     items = ManageFood_Class.get_items(user_id)
+    return items
+
+
+@router.post("/symptomData/{user_id}")
+def get_symptoms_items(user_id: int):
+    items = ManageSymptom_Class.get_items(user_id)
     return items
 
 
@@ -53,8 +60,9 @@ def add_food(user_id: int, food: FoodItem):
         )
         return {"status": "success", "item": item}
     except Exception as e:
-        return  {"status": "error", "message": e}
-    
+        return {"status": "error", "message": e}
+
+
 @router.post("/addsymp/{user_id}")
 def add_symp(user_id: int, symp: SympItem):
     try:
@@ -66,8 +74,7 @@ def add_symp(user_id: int, symp: SympItem):
         )
         return {"status": "success", "item": item}
     except Exception as e:
-        return  {"status": "error", "message": e}
-
+        return {"status": "error", "message": e}
 
 
 @router.post("/ai_suggestion/{user_id}")
@@ -76,7 +83,7 @@ def ai_res(user_id: int, request: Request):
         if request.session.get("ai_generated"):
             return {
                 "status": "skipped",
-                "message": "AI suggestion already generated in this session."
+                "message": "AI suggestion already generated in this session.",
             }
 
         foods = ManageFood_Class.get_items(user_id)
@@ -90,11 +97,10 @@ def ai_res(user_id: int, request: Request):
 
     except Exception as e:
         return {"status": "error", "message": str(e)}
-    
 
-    
 
 from datetime import datetime, timedelta, timezone
+
 
 @router.post("/correlation/{user_id}")
 def correlation(user_id: int):
@@ -106,25 +112,28 @@ def correlation(user_id: int):
 
         for food in foods:
             # Force UTC aware
-            food_time = datetime.fromisoformat(food["creation_date"]).replace(tzinfo=timezone.utc)
+            food_time = datetime.fromisoformat(food["creation_date"]).replace(
+                tzinfo=timezone.utc
+            )
 
             for sym in symptoms:
-                sym_time = datetime.fromisoformat(sym["creation_date"]).replace(tzinfo=timezone.utc)
+                sym_time = datetime.fromisoformat(sym["creation_date"]).replace(
+                    tzinfo=timezone.utc
+                )
 
                 time_diff = sym_time - food_time
 
                 if timedelta(0) <= time_diff <= timedelta(hours=6):
-                    correlation_points.append({
-                        "food": food["food_name"],
-                        "quantity": food["quantity"],
-                        "severity": sym["severity"],
-                        "symptom": sym["symptom"]
-                    })
+                    correlation_points.append(
+                        {
+                            "food": food["food_name"],
+                            "quantity": food["quantity"],
+                            "severity": sym["severity"],
+                            "symptom": sym["symptom"],
+                        }
+                    )
 
-        return {
-            "status": "success",
-            "data": correlation_points
-        }
+        return {"status": "success", "data": correlation_points}
 
     except Exception as e:
         return {"status": "error", "message": str(e)}

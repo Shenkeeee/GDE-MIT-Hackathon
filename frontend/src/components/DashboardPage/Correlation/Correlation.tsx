@@ -130,7 +130,7 @@ const Correlation = () => {
         </div>
 
         {/* AI Insight */}
-        <div className="bg-gradient-to-br from-lime-300 to-green-400 rounded-3xl p-10 shadow-lg flex flex-col justify-center text-[#083d2a]">
+        <div className="bg-linear-to-br from-lime-300 to-green-400 rounded-3xl p-10 shadow-lg flex flex-col justify-center text-[#083d2a]">
           <div className="flex items-center gap-3 mb-6">
             <FaUtensils className="text-2xl" />
             <h3 className="text-xl font-semibold">AI Insight</h3>

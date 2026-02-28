@@ -5,6 +5,7 @@ import TableFood from "./FoodTable/FoodTable";
 import TopBar from "./TopBar/TopBar";
 
 import { FaFilter } from "react-icons/fa";
+import TableSymptoms from "./SymptomsTable/SymptomsTable";
 
 const DashboardPage = () => {
   type Tab = "correlation" | "table food" | "table symptoms";
@@ -82,6 +83,7 @@ const DashboardPage = () => {
 
         {activeTab === "correlation" && <Correlation />}
         {activeTab === "table food" && <TableFood />}
+        {activeTab === "table symptoms" && <TableSymptoms />}
       </div>
     </div>
   );
