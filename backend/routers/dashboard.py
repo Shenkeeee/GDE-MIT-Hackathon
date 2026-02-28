@@ -4,6 +4,7 @@ from dbCalls.usersCalls import UserSetter
 from datetime import datetime
 from dbCalls.usersCalls import UserCretor_Class
 from dbCalls.fooddata import ManageFood_Class
+from dbCalls.symptomps import ManageSymptom_Class
 
 # call it by prefix when fetching
 router = APIRouter(prefix="/api/dashboard", tags=["dashboard"])
@@ -32,7 +33,7 @@ class FoodItem(BaseModel):
 
 class SympItem(BaseModel):
     severity: int = 1
-    symptomps: str | None = None
+    symptom: str | None = None
     allergen: str | None = None
     creation_date: datetime
 
@@ -56,10 +57,10 @@ def add_food(user_id: int, food: FoodItem):
 @router.post("/addsymp/{user_id}")
 def add_symp(user_id: int, symp: SympItem):
     try:
-        item = ManageFood_Class.add_item(
+        item = ManageSymptom_Class.add_item(
             user_id=user_id,
             severity=symp.severity,
-            symptomps=symp.symptomps,
+            symptom=symp.symptom,
             creation_date=symp.creation_date,
         )
         return {"status": "success", "item": item}
