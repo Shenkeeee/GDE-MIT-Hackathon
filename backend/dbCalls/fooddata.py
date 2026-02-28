@@ -135,6 +135,8 @@ class ManageFood:
         pass
 
     def add_item(self, user_id, food_name, ingredients, allergen, quantity, creation_date):
+
+        print(user_id, food_name, ingredients, allergen, quantity, creation_date)
         conn = sqlite3.connect(DB_FOODS)
         cursor = conn.cursor()
 
