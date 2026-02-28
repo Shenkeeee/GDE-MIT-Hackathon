@@ -95,3 +95,118 @@ ManageSymptom_Class = ManageSymptom()
 # foods = ManageFood_Class.get_items(3)
 # symptom = ManageSymptom_Class.get_items(3)
 # analyze_correlation(foods, symptom)
+
+
+ManageUser_Class.add_item_user(
+    email="perfect@perfect.com",
+    first="Perfect",
+    last="User",
+    pwd="perfect123"
+)
+
+# user_id = 6
+
+
+foods = [
+    ("Oatmeal", "Oats, Milk", "Gluten", 2),
+    ("Eggs", "Eggs", "Egg", 3),
+    ("Coffee", "Coffee Beans", "Caffeine", 1),
+    ("Pizza", "Flour, Cheese, Tomato", "Gluten, Dairy", 5),
+    ("Salmon", "Fish", "Fish", 2),
+    ("Chicken Salad", "Chicken, Lettuce", None, 3),
+    ("Chocolate", "Cocoa", None, 2),
+    ("Banana", "Banana", None, 1),
+    ("Yogurt", "Milk", "Dairy", 2),
+    ("Apple", "Apple", None, 1),
+    ("Burger", "Beef, Bread", "Gluten", 5),
+    ("Pasta", "Wheat", "Gluten", 4),
+    ("Orange Juice", "Orange", None, 1),
+    ("Almonds", "Nuts", "Nuts", 1),
+    ("Ice Cream", "Milk, Sugar", "Dairy", 3)
+]
+
+symptoms = [
+    ("Headache", 3),
+    ("Bloating", 4),
+    ("Nausea", 3),
+    ("Fatigue", 2),
+    ("Stomach Pain", 5),
+    ("Skin Rash", 4),
+    ("Dizziness", 3),
+    ("Acid Reflux", 4),
+    ("Brain Fog", 2),
+    ("Itching", 3),
+    ("Muscle Pain", 2),
+    ("Diarrhea", 5),
+    ("Constipation", 3),
+    ("Heartburn", 4),
+    ("Allergy Swelling", 5)
+]
+
+# Insert foods (spread over time)
+from datetime import datetime, timedelta
+
+base_time = datetime(2026, 2, 7, 8, 0, 0)
+
+for i, food in enumerate(foods):
+    ManageFood_Class.add_item(
+        user_id=user_id,
+        food_name=food[0],
+        ingredients=food[1],
+        allergen=food[2] or "",
+        quantity=food[3],
+        creation_date=(base_time + timedelta(hours=i*3)).isoformat()
+    )
+
+# Pasta → Bloating + Stomach Pain
+ManageSymptom_Class.add_item(
+    user_id=user_id,
+    symptom="Bloating",
+    severity=4,
+    creation_date=(base_time + timedelta(hours=4)).isoformat()
+)
+
+ManageSymptom_Class.add_item(
+    user_id=user_id,
+    symptom="Stomach Pain",
+    severity=5,
+    creation_date=(base_time + timedelta(hours=4, minutes=30)).isoformat()
+)
+
+ManageSymptom_Class.add_item(
+    user_id=user_id,
+    symptom="Bloating",
+    severity=4,
+    creation_date=(base_time + timedelta(hours=13)).isoformat()
+)
+
+
+
+ManageSymptom_Class.add_item(
+    user_id=user_id,
+    symptom="Headache",
+    severity=3,
+    creation_date=(base_time + timedelta(hours=2)).isoformat()
+)
+
+ManageSymptom_Class.add_item(
+    user_id=user_id,
+    symptom="Fatigue",
+    severity=2,
+    creation_date=(base_time + timedelta(hours=2, minutes=40)).isoformat()
+)
+
+
+ManageSymptom_Class.add_item(
+    user_id=user_id,
+    symptom="Nausea",
+    severity=3,
+    creation_date=(base_time + timedelta(hours=7)).isoformat()
+)
+
+ManageSymptom_Class.add_item(
+    user_id=user_id,
+    symptom="Dizziness",
+    severity=3,
+    creation_date=(base_time + timedelta(hours=7, minutes=45)).isoformat()
+)
