@@ -10,8 +10,8 @@ interface LoginModalProps {
 const LoginModal = ({ open, onClose }: LoginModalProps) => {
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("a@b.c");
-  const [password, setPassword] = useState("Somethin");
+  const [email, setEmail] = useState("perfect@perfect.com");
+  const [password, setPassword] = useState("perfect123");
 
   // Close on ESC
   useEffect(() => {
