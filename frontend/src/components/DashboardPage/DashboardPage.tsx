@@ -18,6 +18,7 @@ const DashboardPage = () => {
 
   const [activeTab, setActiveTab] = useState<Tab>("correlation");
   const [userName, setUserName] = useState("Joe");
+  const [aiInsight, setAiInsight] = useState<string | null>(null);
 
   const handleDashboardRequest = () => {
     fetch(
@@ -81,7 +82,9 @@ const DashboardPage = () => {
           </div>
         </div>
 
-        {activeTab === "correlation" && <Correlation />}
+        {activeTab === "correlation" && (
+          <Correlation aiInsight={aiInsight} setAiInsight={setAiInsight} />
+        )}
         {activeTab === "table food" && <TableFood />}
         {activeTab === "table symptoms" && <TableSymptoms />}
       </div>

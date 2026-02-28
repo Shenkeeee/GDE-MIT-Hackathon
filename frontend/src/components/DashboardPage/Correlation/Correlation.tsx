@@ -8,23 +8,21 @@ interface CorrelationPoint {
   symptom: string;
 }
 
-const Correlation = () => {
-  const [correlationData, setCorrelationData] = useState<CorrelationPoint[]>([]);
-  const [aiInsight, setAiInsight] = useState("");
+const Correlation = ({ aiInsight, setAiInsight }) => {
+  const [correlationData, setCorrelationData] = useState<CorrelationPoint[]>(
+    [],
+  );
 
   const userId = sessionStorage.getItem("userId");
 
   const handleCorrelationRequest = () => {
-    fetch(
-      `${import.meta.env.VITE_API_URL}/dashboard/correlation/${userId}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userId: sessionStorage.getItem("userId") }),
-      }
-    )
+    fetch(`${import.meta.env.VITE_API_URL}/dashboard/correlation/${userId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userId: sessionStorage.getItem("userId") }),
+    })
       .then((res) => res.json())
       .then((data) => {
         if (data.status === "success") {
@@ -35,27 +33,38 @@ const Correlation = () => {
   };
 
   const handleAiInsight = () => {
-    fetch(
-      `${import.meta.env.VITE_API_URL}/dashboard/ai_suggestion/${userId}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    )
+    // console.log("ai insight ", aiInsight, setAiInsight);
+    // return;
+
+    // If already cached in this session, return early
+    if (aiInsight) {
+      console.log("ai insight was cached");
+      return;
+    }
+
+    fetch(`${import.meta.env.VITE_API_URL}/dashboard/ai_suggestion/${userId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
       .then((res) => res.json())
       .then((data) => {
         if (data.status === "success") {
+          console.log("getting ai answer...");
+          // console.log("ai insight ", aiInsight, setAiInsight);
+
           setAiInsight(data.item);
         }
       })
       .catch((err) => console.error(err));
   };
 
+  // call on start
   useEffect(() => {
     handleCorrelationRequest();
     handleAiInsight();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Auto-scale Y axis based on max quantity
@@ -116,7 +125,7 @@ const Correlation = () => {
               correlationData.reduce((acc, curr) => {
                 acc[curr.symptom] = (acc[curr.symptom] || 0) + 1;
                 return acc;
-              }, {})
+              }, {}),
             ).map(([symptom, count], index) => (
               <div key={index} className="flex flex-col items-center">
                 <div
@@ -137,7 +146,7 @@ const Correlation = () => {
           </div>
 
           <p className="leading-relaxed text-sm whitespace-pre-wrap">
-            {aiInsight || "Analyzing food and symptom patterns..."}
+            {aiInsight ?? "Analyzing food and symptom patterns..."}
           </p>
         </div>
       </div>
