@@ -12,11 +12,11 @@ api_version = "2024-12-01-preview"
 
 print("Done")
 
-# client = AzureOpenAI(
-#     api_version=api_version,
-#     azure_endpoint=endpoint,
-#     api_key=subscription_key,
-# )
+client = AzureOpenAI(
+    api_version=api_version,
+    azure_endpoint=endpoint,
+    api_key=subscription_key,
+)
 
 # # ✅ Read question from file
 # user_input = "Is this call working?"
@@ -49,7 +49,7 @@ print("Done")
 
 
 
-def analyze_correlation(client, food_items, symptom_items):
+def analyze_correlation(food_items, symptom_items):
 
         prompt = f"""
     You are a medical assistant analyzing possible food and symptom correlations.

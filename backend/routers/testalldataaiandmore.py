@@ -90,3 +90,8 @@ ManageSymptom_Class = ManageSymptom()
 # print(result)
 
 
+
+################### AI ####################
+# foods = ManageFood_Class.get_items(3)
+# symptom = ManageSymptom_Class.get_items(3)
+# analyze_correlation(foods, symptom)
