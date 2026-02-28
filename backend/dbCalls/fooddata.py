@@ -42,6 +42,7 @@ def create_database():
 
     conn.commit()
     conn.close()
+    return {"status": "sucess"}
 
 
 
@@ -126,6 +127,7 @@ def generate_sample_data():
 
     conn.commit()
     conn.close()
+    return {"status": "sucess"}
 
 
 class ManageFood:
@@ -147,6 +149,39 @@ class ManageFood:
         conn.commit()
         conn.close()
 
+        return {"status": "sucess"}
+
+
+
+    def modify_item(self, item_id, user_id, food_name, ingredients, allergen, quantity, creation_date):
+        conn = sqlite3.connect(DB_FOODS)
+        cursor = conn.cursor()
+
+        cursor.execute(
+            """
+            UPDATE food_diary
+            SET user_id = ?,
+                food_name = ?,
+                quantity = ?,
+                ingredients = ?,
+                allergen = ?,
+                creation_date = ?
+            WHERE id = ?
+            """,
+            (user_id, food_name, quantity, ingredients, allergen, creation_date, item_id),
+        )
+
+        updated = cursor.rowcount
+
+        conn.commit()
+        conn.close()
+
+        
+
+        if updated == 0:
+            return {"error": "not found"}
+        return {"status": "sucess"}
+
     def delete_item(self, item_id):
         conn = sqlite3.connect(DB_FOODS)
         cursor = conn.cursor()
@@ -156,7 +191,9 @@ class ManageFood:
         conn.commit()
         conn.close()
 
-    def list_items_userid(self, user_id):
+        return {"status": "sucess"}
+
+    def get_items(self, user_id):
         conn = sqlite3.connect(DB_FOODS)
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
@@ -167,6 +204,7 @@ class ManageFood:
 
         conn.close()
         return items
+
 
 
 if __name__ == "__main__":
