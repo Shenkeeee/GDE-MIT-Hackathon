@@ -34,7 +34,7 @@ class FoodItem(BaseModel):
 
 class SympItem(BaseModel):
     severity: int = 1
-    symptomps: str | None = None
+    symptom: str | None = None
     allergen: str | None = None
     creation_date: datetime
 
@@ -61,7 +61,7 @@ def add_symp(user_id: int, symp: SympItem):
         item = ManageSyn.add_item(
             user_id=user_id,
             severity=symp.severity,
-            symptomps=symp.symptomps,
+            symptom=symp.symptom,
             creation_date=symp.creation_date,
         )
         return {"status": "success", "item": item}
