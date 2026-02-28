@@ -6,13 +6,14 @@ type Food = {
   id: number;
   user_id: number;
   food_name: string;
-  category: string;
+  ingredients: string;
+  allergens: string;
   quantity: string;
   creation_date: string;
 };
 
-const categoryColor = (category: string) => {
-  switch (category.toLowerCase()) {
+const ingredientsColor = (ingredients: string) => {
+  switch (ingredients.toLowerCase()) {
     case "carb":
       return "bg-yellow-100 text-yellow-800";
     case "dairy":
@@ -83,7 +84,7 @@ const TableFood = () => {
           <thead>
             <tr className="text-sm text-gray-500">
               <th className="pb-3">Food</th>
-              <th className="pb-3">Category</th>
+              <th className="pb-3">Ingredients</th>
               <th className="pb-3">Quantity</th>
               <th className="pb-3">Time</th>
               <th className="pb-3 text-right">Actions</th>
@@ -108,11 +109,11 @@ const TableFood = () => {
 
                 <td className="px-4 py-4">
                   <span
-                    className={`px-3 py-1 text-xs rounded-full font-medium ${categoryColor(
-                      item.category,
+                    className={`px-3 py-1 text-xs rounded-full font-medium ${ingredientsColor(
+                      item.ingredients,
                     )}`}
                   >
-                    {item.category}
+                    {item.ingredients}
                   </span>
                 </td>
 
