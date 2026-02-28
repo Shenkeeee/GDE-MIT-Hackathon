@@ -1,9 +1,9 @@
 from fastapi import APIRouter
 from pydantic import BaseModel, EmailStr
 from dbCalls.usersCalls import UserSetter
-from dbCalls.usersCalls import UserCreator
+from dbCalls.usersCalls import ManageUser
 
-UserCretor_Class = UserCreator(userdb_path="backend/dbCalls/users.db")
+UserCretor_Class = ManageUser()
 
 # call it by prefix when fetching
 router = APIRouter(prefix="/users", tags=["users"])
