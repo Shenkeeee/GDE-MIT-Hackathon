@@ -7,6 +7,8 @@ from dbCalls.usersCalls import ManageUser
 from dbCalls.fooddata import ManageFood
 from dbCalls.symptomps import ManageSymptom
 
+from AI.AI_test import *
+
 ManageUser_Class = ManageUser()
 ManageFood_Class = ManageFood()
 ManageSymptom_Class = ManageSymptom()
