@@ -7,19 +7,12 @@ import TopBar from "./TopBar/TopBar";
 import { FaFilter } from "react-icons/fa";
 
 const DashboardPage = () => {
-  type Tab =
-    | "correlation"
-    | "food"
-    | "symptoms"
-    | "table food"
-    | "table symptoms";
+  type Tab = "correlation" | "table food" | "table symptoms";
 
   const tabMap = {
     Correlation: "correlation",
-    Food: "food",
-    Symptoms: "symptoms",
-    "Table Food": "table food",
-    "Table Symptoms": "table symptoms",
+    "My Food Log": "table food",
+    "My Symptom Log": "table symptoms",
   } as const;
 
   const [activeTab, setActiveTab] = useState<Tab>("correlation");
