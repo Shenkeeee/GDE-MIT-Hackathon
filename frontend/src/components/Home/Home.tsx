@@ -1,14 +1,9 @@
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 
 import RegisterModal from "../RegisterModal/RegisterModal";
 import LoginModal from "../LoginModal/LoginModal";
 
-import { MdCancel } from "react-icons/md";
-
 const Home = () => {
-  const [openAuth, setOpenAuth] = useState(false);
-
   const [openRegister, setOpenRegister] = useState(false);
   const [openLogin, setOpenLogin] = useState(false);
 
@@ -18,6 +13,7 @@ const Home = () => {
         <RegisterModal
           open={openRegister}
           onClose={() => setOpenRegister(false)}
+          onSwitchToLogin={() => setOpenLogin(true)}
         />
       )}
 
@@ -56,60 +52,12 @@ const Home = () => {
         </p>
 
         <button
-          onClick={() => setOpenAuth(true)}
+          onClick={() => setOpenRegister(true)}
           className="mt-10 px-8 py-3 bg-white/10 border border-white/30 backdrop-blur-md rounded-xl hover:bg-white/20 transition text-[#e1fe6b]"
         >
           Let's Start
         </button>
       </div>
-
-      {/* Slide-in Auth Sidebar */}
-      <AnimatePresence>
-        {openAuth && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-black/40 z-20"
-              onClick={() => setOpenAuth(false)}
-            />
-
-            {/* Sidebar from left */}
-            <motion.div
-              initial={{ x: "-100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "-100%" }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              className="absolute left-0 top-0 h-full w-80 bg-white z-30 p-8 shadow-2xl flex flex-col"
-            >
-              <div className="flex justify-between items-center mb-8">
-                <h2 className="text-xl font-bold">Get Started</h2>
-                <MdCancel
-                  size={20}
-                  className="cursor-pointer"
-                  onClick={() => setOpenAuth(false)}
-                />
-              </div>
-
-              <button
-                onClick={() => setOpenRegister(true)}
-                className="px-6 py-3 my-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition"
-              >
-                Register
-              </button>
-
-              <button
-                onClick={() => setOpenLogin(true)}
-                className="px-6 py-3 my-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition"
-              >
-                Login
-              </button>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
     </div>
   );
 };
