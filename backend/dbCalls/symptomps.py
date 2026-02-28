@@ -93,27 +93,27 @@ class ManageSymptom:
         pass
 
 
-    def add_item(self, user_id, food_name,category, quantity):
+    def add_item(self, user_id, severity,symptom, creation_date):
         conn = sqlite3.connect(DB_SYMPTOM)
         cursor = conn.cursor()
 
         cursor.execute(
             """
-            INSERT INTO food_diary (user_id, food_name, quantity, creation_date)
-            VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
+            INSERT INTO symptoms (user_id, severity, symptom, creation_date)
+            VALUES (?, ?, ?, ?)
             """,
-            (user_id, food_name, category, quantity)
+            (user_id, severity, symptom, creation_date)
         )
 
         conn.commit()
         conn.close()
 
     def delete_item(self,item_id):
-        conn = sqlite3.connect(DB_FOODS)
+        conn = sqlite3.connect(DB_SYMPTOM)
         cursor = conn.cursor()
 
         cursor.execute(
-            "DELETE FROM food_diary WHERE id = ?",
+            "DELETE FROM symptoms WHERE id = ?",
             (item_id,)
         )
 

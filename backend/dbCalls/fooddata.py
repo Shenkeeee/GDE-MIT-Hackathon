@@ -132,16 +132,16 @@ class ManageFood:
     def __init__(self):
         pass
 
-    def add_item(self, user_id, food_name, category, quantity):
+    def add_item(self, user_id, food_name, ingredients, allergen, quantity, creation_date):
         conn = sqlite3.connect(DB_FOODS)
         cursor = conn.cursor()
 
         cursor.execute(
             """
-            INSERT INTO food_diary (user_id, food_name, quantity, creation_date)
-            VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
+            INSERT INTO food_diary (user_id, food_name, quantity, ingredients, allergen, creation_date)
+            VALUES (?, ?, ?, ?, ?, ?)
             """,
-            (user_id, food_name, category, quantity),
+            (user_id, food_name, ingredients,allergen, quantity, creation_date),
         )
 
         conn.commit()
@@ -170,8 +170,9 @@ class ManageFood:
 
 
 if __name__ == "__main__":
-    create_database()
-    generate_sample_data()
+    pass
+    # create_database()
+    # generate_sample_data()
     # ManageFood_Class = ManageFood(DB_FOODS)
     # ManageFood_Class.add_item(2,"Shrimp", 5)
     # ManageFood_Class.delete_item(72)

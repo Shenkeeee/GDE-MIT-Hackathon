@@ -27,9 +27,9 @@ class UserSetter:
         return items
 
 
-class UserCreator:
-    def __init__(self, userdb_path):
-        self.user_db = userdb_path
+class ManageUser:
+    def __init__(self):
+        pass
 
     def create_database(self, DB):
         conn = sqlite3.connect(DB)
@@ -50,18 +50,46 @@ class UserCreator:
         conn.commit()
         conn.close()
 
-    def add_item(self, DB, email, first, last, pwd):
-
-        conn = sqlite3.connect(self.user_db)
+    def delete_item(self, item_id):
+        conn = sqlite3.connect(DB_USERS)
         cursor = conn.cursor()
 
         cursor.execute(
-            "INSERT INTO items (email, first, last, pwd) VALUES (?, ?, ?, ?)",
-            (email, first, last, pwd),
+            "DELETE FROM items WHERE id = ?",
+            (item_id,)
         )
+
+        deleted = cursor.rowcount
 
         conn.commit()
         conn.close()
+
+        if deleted == 0:
+            return "Item not found"
+        return "Item deleted successfully"
+    
+
+    def modify_item(self, item_id, email, first, last, pwd):
+        conn = sqlite3.connect(DB_USERS)
+        cursor = conn.cursor()
+
+        cursor.execute(
+            """
+            UPDATE items
+            SET email = ?, first = ?, last = ?, pwd = ?
+            WHERE id = ?
+            """,
+            (email, first, last, pwd, item_id)
+        )
+
+        updated = cursor.rowcount
+
+        conn.commit()
+        conn.close()
+
+        if updated == 0:
+            return "Item not found"
+        return "Item updated successfully"
 
     def hash_password(self, password):
         return hashlib.sha256(password.encode()).hexdigest()
@@ -156,21 +184,21 @@ if __name__ == "__main__":
     pass
     # RUN THIS ON INIT
     # # Step 1: Create DB + table
-    UserCreator_Class = UserCreator(DB_USERS)
-    # UserCreator_Class.create_database(DB_USERS)
-    # # UserCreator_Class.create_database(DB_FOODS)
+    # ManageUser_Class = ManageUser(DB_USERS)
+    # ManageUser_Class.create_database(DB_USERS)
+    # # ManageUser_Class.create_database(DB_FOODS)
 
     # # Step 2: Add sample items
-    # UserCreator_Class.add_item_user("testiiii", "First", "Last", "myPassword")
+    # ManageUser_Class.add_item_user("testiiii", "First", "Last", "myPassword")
 
     # Step 3: Fetch and print all items
     # print("All items:")
-    # for item in UserCreator_Class.get_all_items(DB_USERS):
+    # for item in ManageUser_Class.get_all_items(DB_USERS):
     #     print(item)
 
     # # Step 4: Fetch single item
     # print("\nItem with ID 1:")
-    print(UserCreator_Class.get_name_by_id(1))
+    # print(ManageUser_Class.get_name_by_id(1))
     
 
-UserCretor_Class = UserCreator(userdb_path="backend/dbCalls/users.db")
+UserCretor_Class = ManageUser()
