@@ -37,18 +37,18 @@ const Home = () => {
 
       {/* Center Content */}
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6 text-[#e1fe6b]">
-        <h2 className="text-2xl md:text-2xl tracking-wide opacity-80 capitalize">
+        <h2 className="text-4xl tracking-wide opacity-80 capitalize">
           Bread Cramps
         </h2>
 
-        <h1 className="text-4xl md:text-6xl font-bold mt-4 text-[#e1fe6b]">
+        <h1 className="text-6xl font-bold mt-8 leading-tight">
           Uncover Complete
           <br />
-          Wellness and healing
+          Wellness and Healing
         </h1>
 
-        <p className="mt-4 text-sm md:text-base opacity-70 max-w-xl text-[#e1fe6b]">
-          Follow the bread crumbs to breed the crumbs.
+        <p className="mt-8 text-lg opacity-80 max-w-2xl">
+          Follow the bread crumbs to solve the bad cramps.
         </p>
 
         <button
