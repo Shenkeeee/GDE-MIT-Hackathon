@@ -37,8 +37,8 @@ def add_food(user_id: int, food: FoodItem):
         item = ManageFood_Class.add_item(
             user_id=user_id,
             food_name=food.food_name,
-            ingredients=[],
-            allergen=[],
+            ingredients="",
+            allergen="",
             quantity=food.quantity,
             creation_date=food.creation_date,
         )
