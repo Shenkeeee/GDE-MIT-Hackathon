@@ -1,11 +1,38 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
-  const [email, setEmail] = useState("a@b.c");
-  const [password, setPassword] = useState("Somethin");
+interface RegisterModalProps {
+  open: boolean;
+  onClose: () => void;
+  onSwitchToLogin: () => void;
+}
+
+const RegisterModal = ({
+  open,
+  onClose,
+  onSwitchToLogin,
+}: RegisterModalProps) => {
   const [firstname, setFirstname] = useState("Matt");
   const [lastname, setLastname] = useState("Percy");
+  const [email, setEmail] = useState("a@b.c");
+  const [password, setPassword] = useState("Somethin");
+
+  // Close on ESC key
+  useEffect(() => {
+    const handleEsc = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+
+    if (open) {
+      window.addEventListener("keydown", handleEsc);
+    }
+
+    return () => {
+      window.removeEventListener("keydown", handleEsc);
+    };
+  }, [open, onClose]);
 
   const handleRegister = () => {
     fetch(`${import.meta.env.VITE_API_URL}/users/register/${email}`, {
@@ -31,9 +58,10 @@ const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
             alert(`Error when creating: ${data.message}`);
             return;
           }
-          // success
-          alert(`Succesful registration`);
-        },
+
+          alert("Successful registration");
+          onClose();
+        }
       )
       .catch((err) => console.error(err));
   };
@@ -51,6 +79,8 @@ const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={onClose}
             className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
           />
 
@@ -60,22 +90,14 @@ const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
             animate={{ y: "-50%", x: "-50%", opacity: 1, scale: 1 }}
             exit={{ y: "-50%", x: "-50%", opacity: 0, scale: 0.9 }}
             transition={{ duration: 0.25 }}
+            onClick={(e) => e.stopPropagation()}
             className="fixed top-1/2 left-1/2 z-50 w-full max-w-md p-8 bg-white rounded-2xl shadow-2xl flex flex-col gap-4"
           >
-            {/* Title */}
             <h2 className="text-2xl font-bold text-center text-green-700">
               Create Your Account
             </h2>
 
-            {/* Inputs */}
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email"
-              className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-green-500 focus:outline-none bg-gray-50"
-            />
-
+            {/* First Name */}
             <input
               type="text"
               value={firstname}
@@ -84,6 +106,7 @@ const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
               className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-green-500 focus:outline-none bg-gray-50"
             />
 
+            {/* Last Name */}
             <input
               type="text"
               value={lastname}
@@ -92,6 +115,16 @@ const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
               className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-green-500 focus:outline-none bg-gray-50"
             />
 
+            {/* Email (3rd) */}
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email"
+              className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-green-500 focus:outline-none bg-gray-50"
+            />
+
+            {/* Password */}
             <input
               type="password"
               value={password}
@@ -100,7 +133,6 @@ const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
               className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-green-500 focus:outline-none bg-gray-50"
             />
 
-            {/* Register Button */}
             <button
               onClick={handleRegister}
               className="w-full py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-medium"
@@ -108,7 +140,6 @@ const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
               Register
             </button>
 
-            {/* Guest Option */}
             <button
               onClick={() => {
                 onClose();
@@ -119,7 +150,6 @@ const RegisterModal = ({ open, onClose, onSwitchToLogin }) => {
               Continue as Guest
             </button>
 
-            {/* Divider */}
             <div className="border-t pt-4 text-center text-sm text-gray-600">
               Already have an account?{" "}
               <button

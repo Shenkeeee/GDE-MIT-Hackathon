@@ -1,12 +1,34 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
-const LoginModal = ({ open, onClose }) => {
+interface LoginModalProps {
+  open: boolean;
+  onClose: () => void;
+}
+
+const LoginModal = ({ open, onClose }: LoginModalProps) => {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("a@b.c");
   const [password, setPassword] = useState("Somethin");
+
+  // Close on ESC
+  useEffect(() => {
+    const handleEsc = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+
+    if (open) {
+      window.addEventListener("keydown", handleEsc);
+    }
+
+    return () => {
+      window.removeEventListener("keydown", handleEsc);
+    };
+  }, [open, onClose]);
 
   const handleLogin = () => {
     fetch(`${import.meta.env.VITE_API_URL}/users/login/${email}`, {
@@ -24,21 +46,19 @@ const LoginModal = ({ open, onClose }) => {
           userId?: string;
         }) => {
           if (data.status === "error") {
-            alert(`Login unsuccesful: ${data?.message}`);
+            alert(`Login unsuccessful: ${data?.message}`);
             return;
           }
 
-          sessionStorage.setItem("userId", data.userId);
-          // success
+          sessionStorage.setItem("userId", data.userId as string);
           navigate("/dashboard");
-        },
+        }
       )
       .catch((err) => console.error(err));
   };
 
   const handleGuestLogin = () => {
-    alert("navigating to dashboard for now...");
-    navigate("/dashboard"); // if using React Router
+    navigate("/dashboard");
   };
 
   return (
@@ -50,45 +70,53 @@ const LoginModal = ({ open, onClose }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+            transition={{ duration: 0.2 }}
             onClick={onClose}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
           />
 
           {/* Modal */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
-            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-md p-8 bg-white rounded-2xl shadow-2xl flex flex-col gap-4"
+            initial={{ y: "-50%", x: "-50%", opacity: 0, scale: 0.9 }}
+            animate={{ y: "-50%", x: "-50%", opacity: 1, scale: 1 }}
+            exit={{ y: "-50%", x: "-50%", opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.25 }}
+            onClick={(e) => e.stopPropagation()}
+            className="fixed top-1/2 left-1/2 z-50 w-full max-w-md p-8 bg-white rounded-2xl shadow-2xl flex flex-col gap-4"
           >
-            <h2 className="text-2xl font-bold text-center mb-4">Login</h2>
+            <h2 className="text-2xl font-bold text-center text-green-700">
+              Welcome Back
+            </h2>
 
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.currentTarget.value)}
               placeholder="Email"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-50"
+              className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-green-500 focus:outline-none bg-gray-50"
             />
+
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.currentTarget.value)}
               placeholder="Password"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-50"
+              className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-green-500 focus:outline-none bg-gray-50"
             />
 
             <button
               onClick={handleLogin}
-              className="w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+              className="w-full py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-medium"
             >
               Login
             </button>
 
             <button
-              onClick={handleGuestLogin}
-              className="w-full py-2 border border-gray-300 rounded-lg hover:bg-gray-100 transition"
+              onClick={() => {
+                onClose();
+                handleGuestLogin();
+              }}
+              className="w-full py-2 border border-green-600 text-green-700 rounded-lg hover:bg-green-50 transition"
             >
               Continue as Guest
             </button>
