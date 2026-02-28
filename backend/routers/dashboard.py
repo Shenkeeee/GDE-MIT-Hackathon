@@ -35,7 +35,6 @@ class FoodItem(BaseModel):
 class SympItem(BaseModel):
     severity: int = 1
     symptom: str | None = None
-    allergen: str | None = None
     creation_date: datetime
 
 
@@ -71,13 +70,12 @@ def add_symp(user_id: int, symp: SympItem):
 
 
 @router.post("/ai_suggestion/{user_id}")
-def add_symp_aires(user_id: int):
+def ai_res(user_id: int):
     try:
         foods = ManageFood_Class.get_items(user_id)
         symptoms = ManageSymptom_Class.get_items(user_id)
         ai_res = analyze_correlation(foods, symptoms)
-        print("ai result:")
-        print(ai_res)
+        print("Ai res", ai_res)
         return {"status": "success", "item": ai_res}
     except Exception as e:
         return  {"status": "error", "message": e}
