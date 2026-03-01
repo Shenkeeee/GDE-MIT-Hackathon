@@ -2,8 +2,11 @@
 
 ## WELCOME
 
+Project description and pictures: https://devpost.com/software/bread-cramps
+
 VIDEO: https://youtu.be/DlYwLdJ8bWQ
-DEPLOYED LINK: https://bimestrial-unperpetuating-archie.ngrok-free.dev
+
+DEPLOYED LINK: Is now offline, thanks for checking it out! :)
 
 ## Team
 
